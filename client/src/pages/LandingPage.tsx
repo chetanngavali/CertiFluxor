@@ -63,9 +63,8 @@ export default function LandingPage() {
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
                     <a href="#features" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Platform</a>
-                    <a href="#solutions" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Solutions</a>
-                    <a href="#developers" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Developers</a>
-                    <a href="#pricing" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Pricing</a>
+                    <Link href="/docs" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Developers</Link>
+                    <Link href="/pricing" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Pricing</Link>
                 </nav>
 
                 <div className="flex items-center gap-4">
@@ -157,9 +156,11 @@ export default function LandingPage() {
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold rounded-xl border-slate-200 hover:bg-slate-50 text-slate-700 transition-all">
-                                Read Documentation
-                            </Button>
+                            <Link href="/docs">
+                                <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold rounded-xl border-slate-200 hover:bg-slate-50 text-slate-700 transition-all">
+                                    Read Documentation
+                                </Button>
+                            </Link>
                         </motion.div>
 
                         {/* Interactive Preview */}
@@ -407,9 +408,9 @@ export default function LandingPage() {
                         {
                             title: "Developers",
                             links: [
-                                { name: "API Reference", href: "#" },
-                                { name: "SDKs", href: "#" },
-                                { name: "Guides", href: "#", icon: true },
+                                { name: "API Reference", href: "/docs" },
+                                { name: "SDKs", href: "/docs" },
+                                { name: "Guides", href: "/docs", icon: true },
                                 { name: "Status", href: "#" }
                             ]
                         },
@@ -418,8 +419,8 @@ export default function LandingPage() {
                             links: [
                                 { name: "Philosophy", href: "#" },
                                 { name: "B2B Scale", href: "#" },
-                                { name: "Compliance", href: "#" },
-                                { name: "Contact", href: "#" }
+                                { name: "Compliance", href: "/terms" },
+                                { name: "Contact", href: "/contact" }
                             ]
                         }
                     ].map((group, i) => (

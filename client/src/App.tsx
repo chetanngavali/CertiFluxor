@@ -12,6 +12,10 @@ import TemplateEditor from "@/pages/TemplateEditor";
 import ApiKeys from "@/pages/ApiKeys";
 import History from "@/pages/History";
 import NotFound from "@/pages/not-found";
+import Pricing from "@/pages/Pricing";
+import Documentation from "@/pages/Documentation";
+import Contact from "@/pages/Contact";
+import Legal from "@/pages/Legal";
 
 function Router() {
   return (
@@ -23,6 +27,11 @@ function Router() {
       <Route path="/templates/:id" component={TemplateEditor} />
       <Route path="/api-keys" component={ApiKeys} />
       <Route path="/history" component={History} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/docs" component={Documentation} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/terms" component={Legal} />
+      <Route path="/privacy" component={Legal} />
       <Route component={NotFound} />
     </Switch>
   );
