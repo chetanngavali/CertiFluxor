@@ -141,6 +141,20 @@ async function seed() {
       permissions: ["generate", "read_templates"]
     });
   }
+
+  // Check if admin user exists
+  const adminUser = await storage.getUserByUsername("admin");
+  if (!adminUser) {
+    console.log("Seeding admin user...");
+    const { hashPassword } = await import("./auth");
+    const hashedPassword = await hashPassword("admin"); // Default password
+    await storage.createUser({
+      username: "admin",
+      password: hashedPassword,
+      role: "admin"
+    });
+    console.log("Admin user created (username: admin, password: admin)");
+  }
 }
 
 export default seed;

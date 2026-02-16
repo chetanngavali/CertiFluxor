@@ -9,6 +9,7 @@ import { sql } from "drizzle-orm";
 export const users = mysqlTable("users", {
   id: int("id").primaryKey().autoincrement(),
   username: varchar("username", { length: 255 }).notNull().unique(),
+  password: text("password").notNull(),
   role: text("role").notNull().default("user"), // "admin" | "user"
 });
 

@@ -33,10 +33,21 @@ const authSchema = z.object({
 
 type AuthFormValues = z.infer<typeof authSchema>;
 
+import { useAuth } from "@/hooks/use-auth";
+
+// ... (keep props and types)
+
 export default function AuthPage() {
     const [location, setLocation] = useLocation();
     const { toast } = useToast();
-    const [isLoading, setIsLoading] = useState(false);
+    const { loginMutation, registerMutation, user } = useAuth();
+
+    // Redirect if already logged in
+    useEffect(() => {
+        if (user) {
+            setLocation("/dashboard");
+        }
+    }, [user, setLocation]);
 
     // URL search params to determine tab
     const params = new URLSearchParams(window.location.search);
@@ -60,45 +71,20 @@ export default function AuthPage() {
     });
 
     const onLogin = async (data: AuthFormValues) => {
-        setIsLoading(true);
         try {
-            // Mock login for now since we're just building UI
-            // In real implementation this calls fetch("/api/login")
-            await new Promise(r => setTimeout(r, 1000));
-            toast({
-                title: "Welcome back!",
-                description: "Successfully logged in to your dashboard.",
-            });
-            setLocation("/");
+            await loginMutation.mutateAsync(data);
+            // Redirect handled by useEffect [user] dependency or here
         } catch (err) {
-            toast({
-                title: "Authentication Failed",
-                description: "Invalid username or password.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsLoading(false);
+            // Error handled by mutation onError
         }
     };
 
     const onRegister = async (data: AuthFormValues) => {
-        setIsLoading(true);
         try {
-            // Mock register
-            await new Promise(r => setTimeout(r, 1200));
-            toast({
-                title: "Account Created",
-                description: "Welcome to CertiFluxor! Let's build some certificates.",
-            });
-            setLocation("/");
+            await registerMutation.mutateAsync(data);
+            // Redirect handled by useEffect [user] dependency
         } catch (err) {
-            toast({
-                title: "Registration Failed",
-                description: "Could not create account. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsLoading(false);
+            // Error handled by mutation onError
         }
     };
 

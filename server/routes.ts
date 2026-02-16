@@ -7,6 +7,7 @@ import { z } from "zod";
 import { insertTemplateSchema, insertApiKeySchema } from "@shared/schema";
 import { randomBytes } from "crypto";
 import seed from "./seed";
+import { setupAuth } from "./auth";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -17,6 +18,8 @@ export async function registerRoutes(
 
   // Seed data on startup
   seed().catch(console.error);
+
+  setupAuth(app);
 
   // --- Middleware for API Key Auth ---
   const authenticateApiKey = async (req: any, res: any, next: any) => {
