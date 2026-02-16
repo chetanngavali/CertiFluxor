@@ -10,6 +10,7 @@ export function useGenerateCertificate() {
       const res = await fetch(api.certificates.generate.path, {
         method: api.certificates.generate.method,
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify(data),
       });
 
@@ -17,17 +18,17 @@ export function useGenerateCertificate() {
         const error = await res.json();
         throw new Error(error.message || "Failed to generate certificate");
       }
-      
+
       return api.certificates.generate.responses[200].parse(await res.json());
     },
     onSuccess: () => {
       toast({ title: "Success", description: "Certificate generation started" });
     },
     onError: (error) => {
-      toast({ 
-        title: "Generation Failed", 
-        description: error.message, 
-        variant: "destructive" 
+      toast({
+        title: "Generation Failed",
+        description: error.message,
+        variant: "destructive"
       });
     },
   });
@@ -37,7 +38,9 @@ export function useCertificateHistory() {
   return useQuery({
     queryKey: [api.certificates.list.path],
     queryFn: async () => {
-      const res = await fetch(api.certificates.list.path);
+      const res = await fetch(api.certificates.list.path, {
+        credentials: 'include'
+      });
       if (!res.ok) throw new Error("Failed to fetch history");
       return api.certificates.list.responses[200].parse(await res.json());
     },

@@ -7,7 +7,9 @@ export function useTemplates() {
   return useQuery({
     queryKey: [api.templates.list.path],
     queryFn: async () => {
-      const res = await fetch(api.templates.list.path);
+      const res = await fetch(api.templates.list.path, {
+        credentials: 'include'
+      });
       if (!res.ok) throw new Error("Failed to fetch templates");
       return api.templates.list.responses[200].parse(await res.json());
     },
@@ -19,7 +21,9 @@ export function useTemplate(id: string) {
     queryKey: [api.templates.get.path, id],
     queryFn: async () => {
       const url = buildUrl(api.templates.get.path, { id });
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        credentials: 'include'
+      });
       if (res.status === 404) return null;
       if (!res.ok) throw new Error("Failed to fetch template");
       return api.templates.get.responses[200].parse(await res.json());
@@ -37,9 +41,10 @@ export function useCreateTemplate() {
       const res = await fetch(api.templates.create.path, {
         method: api.templates.create.method,
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify(data),
       });
-      
+
       if (!res.ok) {
         const error = await res.json();
         throw new Error(error.message || "Failed to create template");
@@ -51,10 +56,10 @@ export function useCreateTemplate() {
       toast({ title: "Success", description: "Template created successfully" });
     },
     onError: (error) => {
-      toast({ 
-        title: "Error", 
-        description: error.message, 
-        variant: "destructive" 
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
       });
     },
   });
@@ -70,6 +75,7 @@ export function useUpdateTemplate() {
       const res = await fetch(url, {
         method: api.templates.update.method,
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify(data),
       });
 
@@ -82,10 +88,10 @@ export function useUpdateTemplate() {
       toast({ title: "Saved", description: "Template updated successfully" });
     },
     onError: (error) => {
-      toast({ 
-        title: "Error", 
-        description: error.message, 
-        variant: "destructive" 
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive"
       });
     },
   });
@@ -98,7 +104,10 @@ export function useDeleteTemplate() {
   return useMutation({
     mutationFn: async (id: string) => {
       const url = buildUrl(api.templates.delete.path, { id });
-      const res = await fetch(url, { method: api.templates.delete.method });
+      const res = await fetch(url, {
+        method: api.templates.delete.method,
+        credentials: 'include'
+      });
       if (!res.ok) throw new Error("Failed to delete template");
     },
     onSuccess: () => {

@@ -7,7 +7,9 @@ export function useApiKeys() {
   return useQuery({
     queryKey: [api.apiKeys.list.path],
     queryFn: async () => {
-      const res = await fetch(api.apiKeys.list.path);
+      const res = await fetch(api.apiKeys.list.path, {
+        credentials: 'include'
+      });
       if (!res.ok) throw new Error("Failed to fetch API keys");
       return api.apiKeys.list.responses[200].parse(await res.json());
     },
@@ -23,9 +25,10 @@ export function useCreateApiKey() {
       const res = await fetch(api.apiKeys.create.path, {
         method: api.apiKeys.create.method,
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
         body: JSON.stringify(data),
       });
-      
+
       if (!res.ok) throw new Error("Failed to create API key");
       return api.apiKeys.create.responses[201].parse(await res.json());
     },
