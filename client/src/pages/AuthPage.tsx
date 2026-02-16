@@ -204,8 +204,8 @@ export default function AuthPage() {
                                                     </FormItem>
                                                 )}
                                             />
-                                            <Button type="submit" disabled={isLoading} className="w-full h-12 rounded-xl font-semibold shadow-lg shadow-primary/20 bg-slate-900 hover:bg-slate-800 text-white">
-                                                {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
+                                            <Button type="submit" disabled={loginMutation.isPending} className="w-full h-12 rounded-xl font-semibold shadow-lg shadow-primary/20 bg-slate-900 hover:bg-slate-800 text-white">
+                                                {loginMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
                                             </Button>
                                         </form>
                                     </Form>
@@ -266,8 +266,8 @@ export default function AuthPage() {
                                                     </FormItem>
                                                 )}
                                             />
-                                            <Button type="submit" disabled={isLoading} className="w-full h-12 rounded-xl font-semibold shadow-lg shadow-primary/20 bg-slate-900 hover:bg-slate-800 text-white">
-                                                {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Create Account"}
+                                            <Button type="submit" disabled={registerMutation.isPending} className="w-full h-12 rounded-xl font-semibold shadow-lg shadow-primary/20 bg-slate-900 hover:bg-slate-800 text-white">
+                                                {registerMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Create Account"}
                                             </Button>
                                         </form>
                                     </Form>
