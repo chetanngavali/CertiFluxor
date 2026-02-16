@@ -28,7 +28,10 @@ import {
     QrCode,
     Variable,
     Settings,
-    Activity
+    Activity,
+    Twitter,
+    Linkedin,
+    Github
 } from "lucide-react";
 
 const fadeInUp = {
@@ -479,81 +482,80 @@ export default function LandingPage() {
             </main>
 
             {/* Footer */}
-            <footer className="bg-background border-t border-border/40 py-24 md:py-32 px-6">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 md:gap-12">
-                    <div className="flex flex-col items-start gap-8">
-                        <div className="flex items-center gap-2">
-                            <Award className="h-8 w-8 text-primary" />
-                            <span className="text-3xl font-black tracking-tighter uppercase">CertiFluxor</span>
+            <footer className="bg-slate-950 text-slate-400 py-24 md:py-32 px-6 border-t border-slate-800 relative overflow-hidden">
+                {/* Background Grid Pattern for Footer */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }}></div>
+
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 relative z-10">
+
+                    {/* Brand Column (Span 2) */}
+                    <div className="lg:col-span-2 flex flex-col items-start gap-8">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-blue-600 p-2 rounded-lg">
+                                <Award className="h-6 w-6 text-white" />
+                            </div>
+                            <span className="text-2xl font-black tracking-tighter uppercase text-white">CertiFluxor</span>
                         </div>
-                        <p className="text-slate-600 text-lg leading-relaxed font-bold">
-                            The infrastructure layer for high-fidelity verifiable credentials. Bridging Excel to automation.
+                        <p className="text-slate-400 text-base leading-relaxed max-w-sm">
+                            The enterprise-grade infrastructure for generating, signing, and delivering verifiable credentials at scale.
                         </p>
-                        <div className="flex items-center gap-4">
-                            {[Zap, Cpu, ShieldCheck].map((Icon, i) => (
-                                <a key={i} href="#" className="h-12 w-12 flex items-center justify-center rounded-[1rem] bg-slate-50 border border-slate-200 text-slate-500 hover:text-primary hover:border-primary hover:shadow-lg hover:shadow-primary/10 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                                    <Icon className="h-5 w-5" />
+                        <div className="flex items-center gap-4 mt-2">
+                            {[
+                                { icon: Twitter, href: "#" },
+                                { icon: Github, href: "#" },
+                                { icon: Linkedin, href: "#" }
+                            ].map((Social, i) => (
+                                <a key={i} href={Social.href} className="h-10 w-10 flex items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 hover:border-slate-700 transition-all">
+                                    <Social.icon className="h-4 w-4" />
                                 </a>
                             ))}
                         </div>
                     </div>
 
-                    {[
-                        {
-                            title: "Platform",
-                            links: [
-                                { name: "Templates", href: "#" },
-                                { name: "Designer Studio", href: "#", badge: "Beta" },
-                                { name: "Excel Engine", href: "#" },
-                                { name: "Cloud Vault", href: "#" }
-                            ]
-                        },
-                        {
-                            title: "Developers",
-                            links: [
-                                { name: "API Reference", href: "/docs" },
-                                { name: "SDKs", href: "/docs" },
-                                { name: "Guides", href: "/docs", icon: true },
-                                { name: "Status", href: "#" }
-                            ]
-                        },
-                        {
-                            title: "Company",
-                            links: [
-                                { name: "Philosophy", href: "#" },
-                                { name: "B2B Scale", href: "#" },
-                                { name: "Compliance", href: "/terms" },
-                                { name: "Contact", href: "/contact" }
-                            ]
-                        }
-                    ].map((group, i) => (
-                        <div key={i}>
-                            <h4 className="font-black text-xs uppercase tracking-[0.2em] mb-10 text-slate-400">{group.title}</h4>
-                            <ul className="space-y-6">
-                                {group.links.map((link: any, j) => (
-                                    <li key={j}>
-                                        <a href={link.href} className="text-slate-600 hover:text-primary transition-all font-bold text-lg flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary rounded pl-0 hover:pl-2">
-                                            {link.name}
-                                            {link.badge && <Badge className="text-[10px] h-4 px-1.5 bg-primary/10 text-primary border-none font-black">{link.badge}</Badge>}
-                                            {link.icon && <CheckCircle2 className="h-4 w-4 text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
+                    {/* Links Columns */}
+                    <div className="lg:col-span-1">
+                        <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-8">Platform</h4>
+                        <ul className="space-y-4">
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Templates</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors flex items-center gap-2">Designer <Badge className="bg-blue-500/10 text-blue-400 border-none text-[10px] px-1.5 py-0.5">BETA</Badge></a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Excel Engine</a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors">Verification</a></li>
+                        </ul>
+                    </div>
+
+                    <div className="lg:col-span-1">
+                        <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-8">Developers</h4>
+                        <ul className="space-y-4">
+                            <li><a href="/docs" className="hover:text-blue-400 transition-colors">API Reference</a></li>
+                            <li><a href="/docs" className="hover:text-blue-400 transition-colors">Webhooks</a></li>
+                            <li><a href="/docs" className="hover:text-blue-400 transition-colors">Status</a></li>
+                            <li><a href="https://github.com/chetanngavali/CertiFluxor" target="_blank" className="hover:text-blue-400 transition-colors">Open Source</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Newsletter / CTA Column (Span 2) */}
+                    <div className="lg:col-span-2 bg-slate-900/50 rounded-2xl p-8 border border-slate-800">
+                        <h4 className="font-bold text-white text-lg mb-4">Stay updated</h4>
+                        <p className="text-sm mb-6 text-slate-400">Subscribe to our developer newsletter for API updates and changelogs.</p>
+                        <div className="flex gap-2">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                className="bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 placeholder:text-slate-600"
+                            />
+                            <Button className="bg-white text-slate-950 hover:bg-slate-200 font-bold">Subscribe</Button>
                         </div>
-                    ))}
+                    </div>
                 </div>
 
-                <div className="max-w-7xl mx-auto pt-20 mt-20 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
-                    <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em]">
-                        © 2026 FluxCert Inc. Production-ready Infrastructure.
+                <div className="max-w-7xl mx-auto pt-16 mt-16 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+                    <p className="text-xs text-slate-500 font-medium">
+                        © 2026 CertiFluxor Inc. All rights reserved.
                     </p>
-                    <div className="flex items-center gap-10">
-                        {["Twitter", "LinkedIn", "GitHub"].map((social, i) => (
-                            <a key={i} href="#" className="text-[10px] font-black text-slate-500 hover:text-primary transition-all uppercase tracking-[0.2em] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary p-1">
-                                {social}
-                            </a>
-                        ))}
+                    <div className="flex items-center gap-8 text-xs font-medium text-slate-500">
+                        <a href="/terms" className="hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
+                        <a href="#" className="hover:text-white transition-colors">Cookies</a>
                     </div>
                 </div>
             </footer>
