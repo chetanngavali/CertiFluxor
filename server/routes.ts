@@ -184,5 +184,71 @@ export async function registerRoutes(
     res.json(history);
   });
 
+  // --- Dashboard Statistics ---
+  app.get('/api/dashboard/stats', async (req, res) => {
+    try {
+      // Get all data in parallel
+      const [allTemplates, allGenerations, allApiKeys] = await Promise.all([
+        storage.getTemplates(),
+        storage.getGenerations(),
+        storage.getApiKeys()
+      ]);
+
+      // Calculate stats
+      const totalTemplates = allTemplates.length;
+      const totalGenerated = allGenerations.length;
+
+      // Calculate success rate (completed vs failed)
+      const completedGenerations = allGenerations.filter(g => g.status === 'completed').length;
+      const successRate = totalGenerated > 0
+        ? Math.round((completedGenerations / totalGenerated) * 100 * 10) / 10
+        : 100;
+
+      // Get recent activity (last 10 generations)
+      const recentActivity = allGenerations.slice(0, 10).map(gen => ({
+        id: gen.id,
+        action: gen.status === 'completed' ? 'Certificate Generated' : 'Generation Failed',
+        recipient: gen.recipientName,
+        date: gen.createdAt.toISOString(),
+        status: gen.status === 'completed' ? 'success' : 'failed'
+      }));
+
+      // Generate chart data (last 7 days)
+      const chartData = [];
+      const now = new Date();
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+        date.setHours(0, 0, 0, 0);
+
+        const nextDate = new Date(date);
+        nextDate.setDate(nextDate.getDate() + 1);
+
+        const count = allGenerations.filter(gen => {
+          const genDate = new Date(gen.createdAt);
+          return genDate >= date && genDate < nextDate;
+        }).length;
+
+        chartData.push({
+          name: days[date.getDay()],
+          value: count
+        });
+      }
+
+      res.json({
+        totalTemplates,
+        totalGenerated,
+        successRate,
+        recentActivity,
+        chartData
+      });
+    } catch (error) {
+      console.error('Dashboard stats error:', error);
+      res.status(500).json({ message: 'Failed to fetch dashboard statistics' });
+    }
+  });
+
   return httpServer;
 }

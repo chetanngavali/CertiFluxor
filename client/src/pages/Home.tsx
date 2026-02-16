@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@shared/routes";
 import { Shell } from "@/components/layout/Shell";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -15,29 +14,19 @@ export default function Home() {
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
-      // Mock stats for dashboard
-      return {
-        totalTemplates: 12,
-        totalGenerated: 1450,
-        successRate: 98.5,
-        recentActivity: [
-          { id: 1, action: "Certificate Generated", recipient: "Alice Smith", date: new Date().toISOString(), status: "success" as const },
-          { id: 2, action: "Template Updated", recipient: "Course Completion v2", date: new Date(Date.now() - 3600000).toISOString(), status: "info" as const },
-          { id: 3, action: "Certificate Generated", recipient: "Bob Jones", date: new Date(Date.now() - 7200000).toISOString(), status: "failed" as const },
-          { id: 4, action: "API Key Created", recipient: "Marketing Team", date: new Date(Date.now() - 86400000).toISOString(), status: "success" as const },
-        ],
-        chartData: [
-          { name: 'Mon', value: 40 },
-          { name: 'Tue', value: 30 },
-          { name: 'Wed', value: 20 },
-          { name: 'Thu', value: 65 },
-          { name: 'Fri', value: 80 },
-          { name: 'Sat', value: 45 },
-          { name: 'Sun', value: 30 },
-        ]
-      };
+      const response = await fetch('/api/dashboard/stats', {
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch dashboard statistics');
+      }
+
+      return await response.json();
     },
-    enabled: user?.role === 'admin'
+    enabled: user?.role === 'admin',
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    refetchOnWindowFocus: true,
   });
 
   const handleLogout = () => {
