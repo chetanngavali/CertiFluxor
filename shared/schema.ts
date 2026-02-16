@@ -60,6 +60,12 @@ export interface TemplateElement {
   zIndex?: number;
   opacity?: number;
 
+  // Transform properties
+  scaleX?: number; // For horizontal flip
+  scaleY?: number; // For vertical flip
+  locked?: boolean; // Lock element from editing
+  cropMode?: boolean; // Enable crop mode for images
+
   // Text properties
   text?: string;
   bindingField?: string; // For dynamicText, matches Excel header
