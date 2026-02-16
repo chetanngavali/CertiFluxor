@@ -200,45 +200,127 @@ export default function LandingPage() {
                                     </div>
 
                                     <AnimatePresence mode="wait">
-                                        {demoMode === "visual" ? (
-                                            <motion.div
-                                                key="visual"
-                                                initial={{ opacity: 0, width: "95%" }}
-                                                animate={{ opacity: 1, width: "100%" }}
-                                                exit={{ opacity: 0, width: "95%" }}
-                                                transition={{ duration: 0.4 }}
-                                                className="w-full flex justify-center items-center p-8 pt-16"
-                                            >
-                                                <div className="w-full max-w-3xl aspect-[1.414/1] bg-white rounded-sm shadow-xl flex flex-col items-center justify-center p-12 border border-slate-200 relative">
-                                                    <Award className="h-16 w-16 text-blue-600 mb-6" />
-                                                    <h3 className="text-2xl font-serif text-slate-900 mb-2 font-bold tracking-tight">CERTIFICATE OF COMPLETION</h3>
-                                                    <div className="w-16 h-1 bg-blue-600 mb-8" />
-                                                    <p className="text-slate-500 text-sm uppercase tracking-widest font-medium mb-4">Presented to</p>
-                                                    <p className="text-4xl font-serif text-slate-900 mb-8 italic">
-                                                        Emily Johnson
+                                        <motion.div
+                                            key="visual"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="w-full h-full flex bg-slate-50/50"
+                                        >
+                                            {/* Simulated Editor Sidebar */}
+                                            <div className="hidden md:flex w-16 border-r border-slate-200 bg-white flex-col items-center py-6 gap-6 z-10">
+                                                {[
+                                                    { icon: <Type className="h-5 w-5" />, active: true },
+                                                    { icon: <ImageIcon className="h-5 w-5" />, active: false },
+                                                    { icon: <QrCode className="h-5 w-5" />, active: false },
+                                                    { icon: <Variable className="h-5 w-5" />, active: false },
+                                                    { icon: <Settings className="h-5 w-5" />, active: false }
+                                                ].map((tool, i) => (
+                                                    <div key={i} className={`p-2.5 rounded-lg transition-all cursor-default ${tool.active ? "bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-200" : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}>
+                                                        {tool.icon}
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {/* Editor Canvas */}
+                                            <div className="flex-1 relative flex items-center justify-center p-4 md:p-8 overflow-hidden">
+                                                {/* Canvas Grid Background */}
+                                                <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "24px 24px", opacity: 0.5 }}></div>
+
+                                                {/* The Certificate Paper */}
+                                                <div className="relative w-full max-w-2xl bg-white shadow-2xl shadow-slate-200/60 aspect-[1.414/1] flex flex-col items-center justify-center p-8 md:p-12 border border-slate-100">
+                                                    {/* Ornamental Border */}
+                                                    <div className="absolute inset-4 border-2 border-slate-100 pointer-events-none"></div>
+                                                    <div className="absolute inset-6 border border-slate-200 pointer-events-none"></div>
+
+                                                    {/* Header */}
+                                                    <div className="text-center mb-8">
+                                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white mb-4 shadow-xl shadow-slate-900/10">
+                                                            <Award className="h-6 w-6" />
+                                                        </div>
+                                                        <h3 className="text-2xl md:text-3xl font-serif font-bold text-slate-900 tracking-wide uppercase">Certificate of Mastery</h3>
+                                                    </div>
+
+                                                    {/* Dynamic Field: Recipient */}
+                                                    <div className="relative group text-center mb-8 w-full max-w-lg">
+                                                        <div className="absolute -inset-x-4 -inset-y-2 border-2 border-blue-500/0 group-hover:border-blue-500/20 rounded-lg transition-all pointer-events-none"></div>
+                                                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-sm">
+                                                            Variable: {"{{recipient.name}}"}
+                                                        </div>
+                                                        <p className="font-serif text-3xl md:text-5xl text-slate-900 italic font-medium relative z-0">
+                                                            Alex Morgan
+                                                        </p>
+                                                        <div className="h-px w-32 bg-slate-200 mx-auto mt-4"></div>
+                                                    </div>
+
+                                                    {/* Body Text */}
+                                                    <p className="text-center text-slate-500 text-sm md:text-base max-w-md leading-relaxed mb-12">
+                                                        For outstanding performance in <strong className="text-slate-900">Enterprise Systems Architecture</strong>. Issued on <span className="text-slate-700 font-medium">Feb 16, 2026</span>.
                                                     </p>
-                                                    <p className="text-slate-600 max-w-md text-center">
-                                                        For successfully demonstrating mastery in <span className="text-slate-900 font-bold">Advanced Systems Architecture</span>.
-                                                    </p>
-                                                    <div className="absolute bottom-12 right-12 w-24 h-24 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center">
-                                                        <Cpu className="h-10 w-10 text-slate-300" />
+
+                                                    {/* Footer / Signature / QR */}
+                                                    <div className="flex items-end justify-between w-full px-8 md:px-16 mt-auto">
+                                                        <div className="text-center">
+                                                            <div className="h-8 md:h-12 w-24 md:w-32 mb-2 bg-[url('/signature.png')] bg-contain bg-no-repeat bg-center opacity-40 grayscale flex items-center justify-center font-handwriting text-2xl text-slate-400">
+                                                                <span className="font-serif italic text-slate-300">Signature</span>
+                                                            </div>
+                                                            <div className="h-px w-24 md:w-32 bg-slate-300 mb-1"></div>
+                                                            <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Instructor</p>
+                                                        </div>
+
+                                                        <div className="relative group">
+                                                            <div className="w-16 h-16 md:w-20 md:h-20 bg-white border border-slate-100 p-1 shadow-sm">
+                                                                <div className="w-full h-full bg-slate-900 flex items-center justify-center text-white">
+                                                                    <QrCode className="h-8 w-8 md:h-10 md:w-10 opacity-90" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-mono text-slate-400 opacity-60">ID: 8X92M</div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Floating 'Gold' Seal */}
+                                                    <div className="absolute top-12 right-12 hidden md:flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-full shadow-lg border-2 border-yellow-200/50">
+                                                        <ShieldCheck className="h-10 w-10 text-yellow-600/80" />
                                                     </div>
                                                 </div>
-                                            </motion.div>
-                                        ) : (
-                                            <motion.div
-                                                key="code"
-                                                initial={{ opacity: 0, y: 10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: -10 }}
-                                                transition={{ duration: 0.4 }}
-                                                className="w-full max-w-3xl h-[400px] bg-[#0d1117] rounded-xl shadow-2xl border border-slate-800 p-6 flex flex-col font-mono text-xs sm:text-sm text-left overflow-hidden relative"
-                                            >
-                                                <div className="flex border-b border-slate-800 pb-4 mb-4 gap-4 text-slate-400">
-                                                    <span className="text-blue-400 font-bold">POST</span> /v1/certificates/issue
+
+                                                {/* Floating Editor Palette (UI Decoration) */}
+                                                <div className="absolute top-8 right-8 bg-white rounded-xl shadow-xl shadow-slate-200/50 border border-slate-100 p-3 hidden lg:block animate-in slide-in-from-right-4 duration-700 delay-300">
+                                                    <div className="flex flex-col gap-3">
+                                                        <div className="flex items-center justify-between gap-8 text-xs font-bold text-slate-400 uppercase tracking-wider pb-2 border-b border-slate-50">
+                                                            <span>Typography</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-8 h-8 rounded border border-slate-200 flex items-center justify-center text-slate-600 font-serif font-bold">A</div>
+                                                            <div className="flex-1">
+                                                                <div className="text-xs font-bold text-slate-700">Playfair Display</div>
+                                                                <div className="text-[10px] text-slate-400">Regular, 48px</div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex gap-1 mt-1">
+                                                            <div className="w-6 h-6 rounded bg-slate-900 border border-slate-200"></div>
+                                                            <div className="w-6 h-6 rounded bg-blue-600 border border-transparent"></div>
+                                                            <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <pre className="text-slate-300 overflow-visible">
-                                                    <code>{`{
+                                            </div>
+                                        </motion.div>
+                                        ) : (
+                                        <motion.div
+                                            key="code"
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="w-full max-w-3xl h-[400px] bg-[#0d1117] rounded-xl shadow-2xl border border-slate-800 p-6 flex flex-col font-mono text-xs sm:text-sm text-left overflow-hidden relative"
+                                        >
+                                            <div className="flex border-b border-slate-800 pb-4 mb-4 gap-4 text-slate-400">
+                                                <span className="text-blue-400 font-bold">POST</span> /v1/certificates/issue
+                                            </div>
+                                            <pre className="text-slate-300 overflow-visible">
+                                                <code>{`{
   "template_id": "tpl_8x92m4k2",
   "recipient": {
     "name": "Emily Johnson",
@@ -254,15 +336,15 @@ export default function LandingPage() {
     "delivery": "email_instant"
   }
 }`}</code>
-                                                </pre>
-                                                <div className="absolute bottom-0 left-0 right-0 bg-[#0d1117]/90 backdrop-blur-sm p-4 border-t border-slate-800 flex justify-between items-center text-green-400">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                                        200 OK
-                                                    </div>
-                                                    <span className="text-slate-500">45ms</span>
+                                            </pre>
+                                            <div className="absolute bottom-0 left-0 right-0 bg-[#0d1117]/90 backdrop-blur-sm p-4 border-t border-slate-800 flex justify-between items-center text-green-400">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                                    200 OK
                                                 </div>
-                                            </motion.div>
+                                                <span className="text-slate-500">45ms</span>
+                                            </div>
+                                        </motion.div>
                                         )}
                                     </AnimatePresence>
                                 </div>
