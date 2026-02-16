@@ -180,10 +180,19 @@ export function TemplateDesigner({
                   )}
 
                   {selectedId === el.id && (
-                    <div className="absolute -top-3 -right-3">
+                    <div
+                      className="absolute -top-3 -right-3 z-50"
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
+                    >
                       <button
-                        className="bg-red-500 text-white p-1 rounded-full shadow-md hover:bg-red-600"
-                        onClick={(e) => { e.stopPropagation(); handleDeleteElement(el.id); }}
+                        className="bg-red-500 text-white p-1 rounded-full shadow-md hover:bg-red-600 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          handleDeleteElement(el.id);
+                        }}
+                        type="button"
                       >
                         <Trash2 className="w-3 h-3" />
                       </button>
@@ -373,13 +382,43 @@ export function TemplateDesigner({
                 {selectedElement.type === "image" && (
                   <div className="space-y-4">
                     <div className="space-y-2">
+                      <Label>Upload Image</Label>
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/webp"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                              const base64 = event.target?.result as string;
+                              handleUpdateElement(selectedElement.id, { src: base64 });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+                      />
+                      <p className="text-xs text-muted-foreground">Upload PNG, JPG, or WebP</p>
+                    </div>
+
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-white px-2 text-muted-foreground">Or</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
                       <Label>Image URL</Label>
                       <Input
                         placeholder="https://..."
                         value={selectedElement.src || ""}
                         onChange={(e) => handleUpdateElement(selectedElement.id, { src: e.target.value })}
                       />
-                      <p className="text-xs text-muted-foreground">For demo, paste a public URL</p>
+                      <p className="text-xs text-muted-foreground">Paste a public image URL</p>
                     </div>
                   </div>
                 )}
