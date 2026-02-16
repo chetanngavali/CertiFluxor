@@ -234,65 +234,65 @@ export default function LandingPage() {
                                                     {/* Canvas Grid Background */}
                                                     <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "24px 24px", opacity: 0.5 }}></div>
 
-                                                    {/* Certificate Container */}
-                                                    <div className="relative w-full max-w-2xl bg-white shadow-2xl shadow-slate-200/60 aspect-[1.414/1] flex flex-col items-center justify-between p-12 md:p-16 border border-slate-100">
+                                                    {/* Certificate Container - Scaled Down */}
+                                                    <div className="relative w-full max-w-[500px] bg-white shadow-2xl shadow-slate-200/60 aspect-[1.414/1] flex flex-col items-center justify-between p-8 border border-slate-100 transform transition-transform hover:scale-[1.01] duration-500">
                                                         {/* Ornamental Border */}
-                                                        <div className="absolute inset-4 border-2 border-slate-100 pointer-events-none"></div>
-                                                        <div className="absolute inset-6 border border-slate-200 pointer-events-none"></div>
+                                                        <div className="absolute inset-3 border-2 border-slate-100 pointer-events-none"></div>
+                                                        <div className="absolute inset-5 border border-slate-200 pointer-events-none"></div>
 
                                                         {/* Header */}
-                                                        <div className="text-center w-full mt-4">
-                                                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white mb-6 shadow-xl shadow-slate-900/10">
-                                                                <Award className="h-6 w-6" />
+                                                        <div className="text-center w-full mt-2">
+                                                            <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white mb-3 shadow-xl shadow-slate-900/10">
+                                                                <Award className="h-4 w-4" />
                                                             </div>
-                                                            <h3 className="text-3xl font-serif font-bold text-slate-900 tracking-wide uppercase">Certificate of Mastery</h3>
+                                                            <h3 className="text-xl font-serif font-bold text-slate-900 tracking-wide uppercase">Certificate of Mastery</h3>
                                                         </div>
 
                                                         {/* Dynamic Field: Recipient */}
-                                                        <div className="relative group text-center w-full max-w-lg my-auto">
-                                                            <div className="absolute -inset-x-6 -inset-y-4 border-2 border-dashed border-blue-500/20 rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none"></div>
-                                                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-sm pointer-events-none">
+                                                        <div className="relative group text-center w-full max-w-sm my-auto">
+                                                            <div className="absolute -inset-x-4 -inset-y-2 border-2 border-dashed border-blue-500/20 rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none"></div>
+                                                            <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-sm pointer-events-none">
                                                                 Variable: {"{{recipient.name}}"}
                                                             </div>
-                                                            <p className="font-serif text-5xl md:text-6xl text-slate-900 italic font-medium relative z-0 tracking-tight">
+                                                            <p className="font-serif text-4xl text-slate-900 italic font-medium relative z-0 tracking-tight">
                                                                 Alex Morgan
                                                             </p>
-                                                            <div className="h-px w-32 bg-slate-200 mx-auto mt-6"></div>
+                                                            <div className="h-px w-20 bg-slate-200 mx-auto mt-3"></div>
                                                         </div>
 
                                                         {/* Body Text */}
-                                                        <div className="text-center max-w-lg mx-auto mb-8">
-                                                            <p className="text-slate-500 text-base leading-relaxed">
+                                                        <div className="text-center max-w-xs mx-auto mb-4">
+                                                            <p className="text-slate-500 text-xs leading-relaxed">
                                                                 For outstanding performance in <strong className="text-slate-900">Enterprise Systems Architecture</strong>.
                                                             </p>
-                                                            <p className="text-slate-400 text-sm mt-2 font-medium">Issued on Feb 16, 2026</p>
+                                                            <p className="text-slate-400 text-[10px] mt-1 font-medium">Issued on Feb 16, 2026</p>
                                                         </div>
 
                                                         {/* Footer: Signature & QR */}
-                                                        <div className="flex items-end justify-between w-full px-8 md:px-12 mb-2">
+                                                        <div className="flex items-end justify-between w-full px-6 mb-1">
                                                             <div className="text-center">
-                                                                <div className="font-serif italic text-3xl text-slate-400 mb-2 transform -rotate-2">James Doe</div>
-                                                                <div className="h-px w-32 bg-slate-300 mb-2"></div>
-                                                                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Instructor</p>
+                                                                <div className="font-serif italic text-xl text-slate-400 mb-1 transform -rotate-2">James Doe</div>
+                                                                <div className="h-px w-20 bg-slate-300 mb-1"></div>
+                                                                <p className="text-[8px] uppercase font-bold text-slate-400 tracking-widest">Instructor</p>
                                                             </div>
 
                                                             <div className="text-center">
-                                                                <div className="bg-white p-1 border border-slate-100 shadow-sm inline-block mb-2">
-                                                                    <QrCode className="h-16 w-16 text-slate-900" strokeWidth={1.5} />
+                                                                <div className="bg-white p-1 border border-slate-100 shadow-sm inline-block mb-1">
+                                                                    <QrCode className="h-10 w-10 text-slate-900" strokeWidth={1.5} />
                                                                 </div>
-                                                                <p className="text-[10px] font-mono text-slate-300 uppercase tracking-widest">ID: 8X92M</p>
+                                                                <p className="text-[8px] font-mono text-slate-300 uppercase tracking-widest">ID: 8X92M</p>
                                                             </div>
                                                         </div>
 
-                                                        {/* Gold Seal - Better Positioned */}
-                                                        <div className="absolute top-16 right-16 hidden md:flex items-center justify-center w-24 h-24 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-full shadow-lg border border-amber-100">
+                                                        {/* Gold Seal - Smaller & Tucked */}
+                                                        <div className="absolute top-10 right-10 hidden md:flex items-center justify-center w-14 h-14 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-full shadow-lg border border-amber-100">
                                                             <div className="absolute inset-1 border border-amber-200/50 rounded-full"></div>
-                                                            <ShieldCheck className="h-12 w-12 text-amber-500/80" strokeWidth={1.5} />
+                                                            <ShieldCheck className="h-7 w-7 text-amber-500/80" strokeWidth={1.5} />
                                                         </div>
                                                     </div>
 
-                                                    {/* Floating Editor Palette - Lowered & Cleaned */}
-                                                    <div className="absolute top-12 right-6 bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100/50 p-4 hidden xl:block animate-in slide-in-from-right-8 duration-700 delay-300 w-64">
+                                                    {/* Floating Editor Palette - Positioned in Corner */}
+                                                    <div className="absolute top-6 right-6 bg-white/95 backdrop-blur rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200/60 p-4 hidden xl:block animate-in slide-in-from-right-8 duration-700 delay-300 w-56">
                                                         <div className="flex flex-col gap-4">
                                                             <div className="flex items-center justify-between border-b border-slate-50 pb-3">
                                                                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Typography</span>
