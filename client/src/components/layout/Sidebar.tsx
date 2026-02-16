@@ -16,7 +16,7 @@ export function Sidebar() {
     <div className="hidden lg:flex h-screen w-64 flex-col fixed inset-y-0 z-50 bg-slate-900 text-white border-r border-slate-800">
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-slate-800 bg-slate-950">
         <Award className="h-6 w-6 text-primary mr-2" />
-        <span className="font-display font-black text-xl tracking-tighter uppercase text-white">FluxCert</span>
+        <span className="font-display font-black text-xl tracking-tighter uppercase text-white">CertiFluxor</span>
       </div>
 
       <nav className="flex-1 flex flex-col gap-1 p-4">

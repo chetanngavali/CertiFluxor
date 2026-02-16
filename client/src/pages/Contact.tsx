@@ -9,7 +9,7 @@ export default function Contact() {
             <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
                 <div className="container flex h-16 items-center justify-between px-4 sm:px-8">
                     <Link href="/" className="flex items-center gap-2 font-bold text-slate-900 text-xl tracking-tight uppercase">
-                        FluxCert
+                        CertiFluxor
                     </Link>
                     <nav className="flex items-center gap-6">
                         <Link href="/pricing">

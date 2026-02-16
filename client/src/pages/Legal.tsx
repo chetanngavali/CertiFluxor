@@ -5,7 +5,7 @@ export default function Legal() {
         <div className="min-h-screen bg-slate-50 font-sans selection:bg-primary selection:text-white py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
                 <Link href="/" className="mb-8 inline-block font-bold text-slate-900 text-xl tracking-tight uppercase">
-                    FluxCert
+                    CertiFluxor
                 </Link>
 
                 <h1 className="text-3xl font-black text-slate-900 mb-8">Terms of Service</h1>
@@ -13,10 +13,10 @@ export default function Legal() {
                     <p>Last updated: February 16, 2026</p>
 
                     <h3>1. Acceptance of Terms</h3>
-                    <p>By accessing and using FluxCert, you accept and agree to be bound by the terms and provision of this agreement.</p>
+                    <p>By accessing and using CertiFluxor, you accept and agree to be bound by the terms and provision of this agreement.</p>
 
                     <h3>2. Service Description</h3>
-                    <p>FluxCert provides automated certificate generation and issuance services. We reserve the right to modify or discontinue the service at any time.</p>
+                    <p>CertiFluxor provides automated certificate generation and issuance services. We reserve the right to modify or discontinue the service at any time.</p>
 
                     <h3>3. User Accounts</h3>
                     <p>You are responsible for maintaining the security of your account and API keys. Any activity under your account is your responsibility.</p>

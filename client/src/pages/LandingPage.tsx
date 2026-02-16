@@ -57,7 +57,7 @@ export default function LandingPage() {
                     <div className="bg-slate-900 p-1.5 rounded-lg shadow-lg">
                         <Award className="h-5 w-5 text-white" />
                     </div>
-                    <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">FluxCert</span>
+                    <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">CertiFluxor</span>
                 </div>
 
                 {/* Desktop Nav */}
@@ -141,7 +141,7 @@ export default function LandingPage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.2 }}
                         >
-                            Automate certificate issuance with our production-ready API and visual designer. Built for ambitious education and enterprise teams.
+                            CertiFluxor automates certificate issuance with a production-ready API and visual designer. The enterprise infrastructure for digital credentials.
                         </motion.p>
 
                         <motion.div
@@ -200,127 +200,128 @@ export default function LandingPage() {
                                     </div>
 
                                     <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key="visual"
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                            transition={{ duration: 0.4 }}
-                                            className="w-full h-full flex bg-slate-50/50"
-                                        >
-                                            {/* Simulated Editor Sidebar */}
-                                            <div className="hidden md:flex w-16 border-r border-slate-200 bg-white flex-col items-center py-6 gap-6 z-10">
-                                                {[
-                                                    { icon: <Type className="h-5 w-5" />, active: true },
-                                                    { icon: <ImageIcon className="h-5 w-5" />, active: false },
-                                                    { icon: <QrCode className="h-5 w-5" />, active: false },
-                                                    { icon: <Variable className="h-5 w-5" />, active: false },
-                                                    { icon: <Settings className="h-5 w-5" />, active: false }
-                                                ].map((tool, i) => (
-                                                    <div key={i} className={`p-2.5 rounded-lg transition-all cursor-default ${tool.active ? "bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-200" : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}>
-                                                        {tool.icon}
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            {/* Editor Canvas */}
-                                            <div className="flex-1 relative flex items-center justify-center p-4 md:p-8 overflow-hidden">
-                                                {/* Canvas Grid Background */}
-                                                <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "24px 24px", opacity: 0.5 }}></div>
-
-                                                {/* The Certificate Paper */}
-                                                <div className="relative w-full max-w-2xl bg-white shadow-2xl shadow-slate-200/60 aspect-[1.414/1] flex flex-col items-center justify-center p-8 md:p-12 border border-slate-100">
-                                                    {/* Ornamental Border */}
-                                                    <div className="absolute inset-4 border-2 border-slate-100 pointer-events-none"></div>
-                                                    <div className="absolute inset-6 border border-slate-200 pointer-events-none"></div>
-
-                                                    {/* Header */}
-                                                    <div className="text-center mb-8">
-                                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white mb-4 shadow-xl shadow-slate-900/10">
-                                                            <Award className="h-6 w-6" />
+                                        {demoMode === "visual" ? (
+                                            <motion.div
+                                                key="visual"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.4 }}
+                                                className="w-full h-full flex bg-slate-50/50"
+                                            >
+                                                {/* Simulated Editor Sidebar */}
+                                                <div className="hidden md:flex w-16 border-r border-slate-200 bg-white flex-col items-center py-6 gap-6 z-10">
+                                                    {[
+                                                        { icon: <Type className="h-5 w-5" />, active: true },
+                                                        { icon: <ImageIcon className="h-5 w-5" />, active: false },
+                                                        { icon: <QrCode className="h-5 w-5" />, active: false },
+                                                        { icon: <Variable className="h-5 w-5" />, active: false },
+                                                        { icon: <Settings className="h-5 w-5" />, active: false }
+                                                    ].map((tool, i) => (
+                                                        <div key={i} className={`p-2.5 rounded-lg transition-all cursor-default ${tool.active ? "bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-200" : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}>
+                                                            {tool.icon}
                                                         </div>
-                                                        <h3 className="text-2xl md:text-3xl font-serif font-bold text-slate-900 tracking-wide uppercase">Certificate of Mastery</h3>
-                                                    </div>
+                                                    ))}
+                                                </div>
 
-                                                    {/* Dynamic Field: Recipient */}
-                                                    <div className="relative group text-center mb-8 w-full max-w-lg">
-                                                        <div className="absolute -inset-x-4 -inset-y-2 border-2 border-blue-500/0 group-hover:border-blue-500/20 rounded-lg transition-all pointer-events-none"></div>
-                                                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-sm">
-                                                            Variable: {"{{recipient.name}}"}
-                                                        </div>
-                                                        <p className="font-serif text-3xl md:text-5xl text-slate-900 italic font-medium relative z-0">
-                                                            Alex Morgan
-                                                        </p>
-                                                        <div className="h-px w-32 bg-slate-200 mx-auto mt-4"></div>
-                                                    </div>
+                                                {/* Editor Canvas */}
+                                                <div className="flex-1 relative flex items-center justify-center p-4 md:p-8 overflow-hidden">
+                                                    {/* Canvas Grid Background */}
+                                                    <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "24px 24px", opacity: 0.5 }}></div>
 
-                                                    {/* Body Text */}
-                                                    <p className="text-center text-slate-500 text-sm md:text-base max-w-md leading-relaxed mb-12">
-                                                        For outstanding performance in <strong className="text-slate-900">Enterprise Systems Architecture</strong>. Issued on <span className="text-slate-700 font-medium">Feb 16, 2026</span>.
-                                                    </p>
+                                                    {/* The Certificate Paper */}
+                                                    <div className="relative w-full max-w-2xl bg-white shadow-2xl shadow-slate-200/60 aspect-[1.414/1] flex flex-col items-center justify-center p-8 md:p-12 border border-slate-100">
+                                                        {/* Ornamental Border */}
+                                                        <div className="absolute inset-4 border-2 border-slate-100 pointer-events-none"></div>
+                                                        <div className="absolute inset-6 border border-slate-200 pointer-events-none"></div>
 
-                                                    {/* Footer / Signature / QR */}
-                                                    <div className="flex items-end justify-between w-full px-8 md:px-16 mt-auto">
-                                                        <div className="text-center">
-                                                            <div className="h-8 md:h-12 w-24 md:w-32 mb-2 bg-[url('/signature.png')] bg-contain bg-no-repeat bg-center opacity-40 grayscale flex items-center justify-center font-handwriting text-2xl text-slate-400">
-                                                                <span className="font-serif italic text-slate-300">Signature</span>
+                                                        {/* Header */}
+                                                        <div className="text-center mb-8">
+                                                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 text-white mb-4 shadow-xl shadow-slate-900/10">
+                                                                <Award className="h-6 w-6" />
                                                             </div>
-                                                            <div className="h-px w-24 md:w-32 bg-slate-300 mb-1"></div>
-                                                            <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Instructor</p>
+                                                            <h3 className="text-2xl md:text-3xl font-serif font-bold text-slate-900 tracking-wide uppercase">Certificate of Mastery</h3>
                                                         </div>
 
-                                                        <div className="relative group">
-                                                            <div className="w-16 h-16 md:w-20 md:h-20 bg-white border border-slate-100 p-1 shadow-sm">
-                                                                <div className="w-full h-full bg-slate-900 flex items-center justify-center text-white">
-                                                                    <QrCode className="h-8 w-8 md:h-10 md:w-10 opacity-90" />
+                                                        {/* Dynamic Field: Recipient */}
+                                                        <div className="relative group text-center mb-8 w-full max-w-lg">
+                                                            <div className="absolute -inset-x-4 -inset-y-2 border-2 border-blue-500/0 group-hover:border-blue-500/20 rounded-lg transition-all pointer-events-none"></div>
+                                                            <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 shadow-sm">
+                                                                Variable: {"{{recipient.name}}"}
+                                                            </div>
+                                                            <p className="font-serif text-3xl md:text-5xl text-slate-900 italic font-medium relative z-0">
+                                                                Alex Morgan
+                                                            </p>
+                                                            <div className="h-px w-32 bg-slate-200 mx-auto mt-4"></div>
+                                                        </div>
+
+                                                        {/* Body Text */}
+                                                        <p className="text-center text-slate-500 text-sm md:text-base max-w-md leading-relaxed mb-12">
+                                                            For outstanding performance in <strong className="text-slate-900">Enterprise Systems Architecture</strong>. Issued on <span className="text-slate-700 font-medium">Feb 16, 2026</span>.
+                                                        </p>
+
+                                                        {/* Footer / Signature / QR */}
+                                                        <div className="flex items-end justify-between w-full px-8 md:px-16 mt-auto">
+                                                            <div className="text-center">
+                                                                <div className="h-8 md:h-12 w-24 md:w-32 mb-2 bg-[url('/signature.png')] bg-contain bg-no-repeat bg-center opacity-40 grayscale flex items-center justify-center font-handwriting text-2xl text-slate-400">
+                                                                    <span className="font-serif italic text-slate-300">Signature</span>
+                                                                </div>
+                                                                <div className="h-px w-24 md:w-32 bg-slate-300 mb-1"></div>
+                                                                <p className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Instructor</p>
+                                                            </div>
+
+                                                            <div className="relative group">
+                                                                <div className="w-16 h-16 md:w-20 md:h-20 bg-white border border-slate-100 p-1 shadow-sm">
+                                                                    <div className="w-full h-full bg-slate-900 flex items-center justify-center text-white">
+                                                                        <QrCode className="h-8 w-8 md:h-10 md:w-10 opacity-90" />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-mono text-slate-400 opacity-60">ID: 8X92M</div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Floating 'Gold' Seal */}
+                                                        <div className="absolute top-12 right-12 hidden md:flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-full shadow-lg border-2 border-yellow-200/50">
+                                                            <ShieldCheck className="h-10 w-10 text-yellow-600/80" />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Floating Editor Palette (UI Decoration) */}
+                                                    <div className="absolute top-8 right-8 bg-white rounded-xl shadow-xl shadow-slate-200/50 border border-slate-100 p-3 hidden lg:block animate-in slide-in-from-right-4 duration-700 delay-300">
+                                                        <div className="flex flex-col gap-3">
+                                                            <div className="flex items-center justify-between gap-8 text-xs font-bold text-slate-400 uppercase tracking-wider pb-2 border-b border-slate-50">
+                                                                <span>Typography</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-8 h-8 rounded border border-slate-200 flex items-center justify-center text-slate-600 font-serif font-bold">A</div>
+                                                                <div className="flex-1">
+                                                                    <div className="text-xs font-bold text-slate-700">Playfair Display</div>
+                                                                    <div className="text-[10px] text-slate-400">Regular, 48px</div>
                                                                 </div>
                                                             </div>
-                                                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-mono text-slate-400 opacity-60">ID: 8X92M</div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Floating 'Gold' Seal */}
-                                                    <div className="absolute top-12 right-12 hidden md:flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-full shadow-lg border-2 border-yellow-200/50">
-                                                        <ShieldCheck className="h-10 w-10 text-yellow-600/80" />
-                                                    </div>
-                                                </div>
-
-                                                {/* Floating Editor Palette (UI Decoration) */}
-                                                <div className="absolute top-8 right-8 bg-white rounded-xl shadow-xl shadow-slate-200/50 border border-slate-100 p-3 hidden lg:block animate-in slide-in-from-right-4 duration-700 delay-300">
-                                                    <div className="flex flex-col gap-3">
-                                                        <div className="flex items-center justify-between gap-8 text-xs font-bold text-slate-400 uppercase tracking-wider pb-2 border-b border-slate-50">
-                                                            <span>Typography</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="w-8 h-8 rounded border border-slate-200 flex items-center justify-center text-slate-600 font-serif font-bold">A</div>
-                                                            <div className="flex-1">
-                                                                <div className="text-xs font-bold text-slate-700">Playfair Display</div>
-                                                                <div className="text-[10px] text-slate-400">Regular, 48px</div>
+                                                            <div className="flex gap-1 mt-1">
+                                                                <div className="w-6 h-6 rounded bg-slate-900 border border-slate-200"></div>
+                                                                <div className="w-6 h-6 rounded bg-blue-600 border border-transparent"></div>
+                                                                <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200"></div>
                                                             </div>
                                                         </div>
-                                                        <div className="flex gap-1 mt-1">
-                                                            <div className="w-6 h-6 rounded bg-slate-900 border border-slate-200"></div>
-                                                            <div className="w-6 h-6 rounded bg-blue-600 border border-transparent"></div>
-                                                            <div className="w-6 h-6 rounded bg-slate-100 border border-slate-200"></div>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </motion.div>
+                                            </motion.div>
                                         ) : (
-                                        <motion.div
-                                            key="code"
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            transition={{ duration: 0.4 }}
-                                            className="w-full max-w-3xl h-[400px] bg-[#0d1117] rounded-xl shadow-2xl border border-slate-800 p-6 flex flex-col font-mono text-xs sm:text-sm text-left overflow-hidden relative"
-                                        >
-                                            <div className="flex border-b border-slate-800 pb-4 mb-4 gap-4 text-slate-400">
-                                                <span className="text-blue-400 font-bold">POST</span> /v1/certificates/issue
-                                            </div>
-                                            <pre className="text-slate-300 overflow-visible">
-                                                <code>{`{
+                                            <motion.div
+                                                key="code"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.4 }}
+                                                className="w-full max-w-3xl h-[400px] bg-[#0d1117] rounded-xl shadow-2xl border border-slate-800 p-6 flex flex-col font-mono text-xs sm:text-sm text-left overflow-hidden relative"
+                                            >
+                                                <div className="flex border-b border-slate-800 pb-4 mb-4 gap-4 text-slate-400">
+                                                    <span className="text-blue-400 font-bold">POST</span> /v1/certificates/issue
+                                                </div>
+                                                <pre className="text-slate-300 overflow-visible">
+                                                    <code>{`{
   "template_id": "tpl_8x92m4k2",
   "recipient": {
     "name": "Emily Johnson",
@@ -336,15 +337,15 @@ export default function LandingPage() {
     "delivery": "email_instant"
   }
 }`}</code>
-                                            </pre>
-                                            <div className="absolute bottom-0 left-0 right-0 bg-[#0d1117]/90 backdrop-blur-sm p-4 border-t border-slate-800 flex justify-between items-center text-green-400">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                                    200 OK
+                                                </pre>
+                                                <div className="absolute bottom-0 left-0 right-0 bg-[#0d1117]/90 backdrop-blur-sm p-4 border-t border-slate-800 flex justify-between items-center text-green-400">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                                        200 OK
+                                                    </div>
+                                                    <span className="text-slate-500">45ms</span>
                                                 </div>
-                                                <span className="text-slate-500">45ms</span>
-                                            </div>
-                                        </motion.div>
+                                            </motion.div>
                                         )}
                                     </AnimatePresence>
                                 </div>
@@ -463,7 +464,7 @@ export default function LandingPage() {
                     <div className="flex flex-col items-start gap-8">
                         <div className="flex items-center gap-2">
                             <Award className="h-8 w-8 text-primary" />
-                            <span className="text-3xl font-black tracking-tighter uppercase">FluxCert</span>
+                            <span className="text-3xl font-black tracking-tighter uppercase">CertiFluxor</span>
                         </div>
                         <p className="text-slate-600 text-lg leading-relaxed font-bold">
                             The infrastructure layer for high-fidelity verifiable credentials. Bridging Excel to automation.

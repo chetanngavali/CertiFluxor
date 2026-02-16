@@ -75,7 +75,7 @@ export default function AuthPage() {
             await new Promise(r => setTimeout(r, 1200));
             toast({
                 title: "Account Created",
-                description: "Welcome to FluxCert! Let's build some certificates.",
+                description: "Welcome to CertiFluxor! Let's build some certificates.",
             });
             setLocation("/");
         } catch (err) {
@@ -106,7 +106,7 @@ export default function AuthPage() {
                     <div className="bg-primary p-3 rounded-2xl shadow-xl shadow-primary/20 mb-4 scale-110">
                         <Award className="h-8 w-8 text-white" />
                     </div>
-                    <h1 className="text-3xl font-black tracking-tighter mb-2 uppercase">FluxCert</h1>
+                    <h1 className="text-3xl font-black tracking-tighter mb-2 uppercase">CertiFluxor</h1>
                     <p className="text-muted-foreground text-center font-medium">Enterprise Certificate Infrastructure</p>
                 </div>
 
@@ -182,7 +182,7 @@ export default function AuthPage() {
                         <Card className="rounded-[2rem] border-none shadow-2xl shadow-slate-200/50 overflow-hidden">
                             <CardHeader className="pt-8 px-8 pb-4">
                                 <CardTitle className="text-2xl">Create Account</CardTitle>
-                                <CardDescription>Get started with FluxCert today for free.</CardDescription>
+                                <CardDescription>Get started with CertiFluxor today for free.</CardDescription>
                             </CardHeader>
                             <CardContent className="px-8 space-y-4">
                                 <Form {...registerForm}>

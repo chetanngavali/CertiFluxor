@@ -13,7 +13,7 @@ export default function Documentation() {
                 <div className="container flex items-center justify-between px-4 sm:px-8">
                     <div className="flex items-center gap-8">
                         <Link href="/" className="flex items-center gap-2 font-bold text-slate-900 text-lg tracking-tight uppercase">
-                            FluxCert <span className="text-slate-400 font-medium normal-case ml-1 tracking-normal">/ Docs</span>
+                            CertiFluxor <span className="text-slate-400 font-medium normal-case ml-1 tracking-normal">/ Docs</span>
                         </Link>
                         <div className="hidden md:flex relative">
                             <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -106,9 +106,9 @@ export default function Documentation() {
                             Getting Started <ChevronRight className="h-4 w-4" /> Introduction
                         </div>
 
-                        <h1 className="text-4xl font-black text-slate-900 mb-6 tracking-tight">FluxCert API Overview</h1>
+                        <h1 className="text-4xl font-black text-slate-900 mb-6 tracking-tight">CertiFluxor API Overview</h1>
                         <p className="text-xl text-slate-600 font-medium leading-relaxed mb-8">
-                            FluxCert is a developer-first platform for programmatically generating PDF certificates from JSON data or CSV files.
+                            CertiFluxor is a developer-first platform for programmatically generating PDF certificates from JSON data or CSV files.
                         </p>
 
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 mb-8">
@@ -122,9 +122,9 @@ export default function Documentation() {
                         </div>
 
                         <h2 className="text-2xl font-bold text-slate-900 mt-12 mb-6">Authentication</h2>
-                        <p className="mb-4 text-slate-600 font-medium">FluxCert uses API keys to allow access to the API. You can register a new API key at our <Link href="/auth?mode=register" className="text-blue-600 hover:underline">developer portal</Link>.</p>
+                        <p className="mb-4 text-slate-600 font-medium">CertiFluxor uses API keys to allow access to the API. You can register a new API key at our <Link href="/auth?mode=register" className="text-blue-600 hover:underline">developer portal</Link>.</p>
 
-                        <p className="mb-6 text-slate-600 font-medium">FluxCert expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+                        <p className="mb-6 text-slate-600 font-medium">CertiFluxor expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
                         <div className="bg-[#0d1117] rounded-xl overflow-hidden shadow-xl mb-12 border border-slate-800">
                             <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-slate-800">
