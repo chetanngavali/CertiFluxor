@@ -57,6 +57,7 @@ export function TemplateDesigner({
   const [scale, setScale] = useState(initialScale);
   const [pageSize, setPageSize] = useState<"a4-landscape" | "a4-portrait">("a4-landscape");
   const [showGrid, setShowGrid] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const selectedElement = elements.find(el => el.id === selectedId);
@@ -252,20 +253,65 @@ export function TemplateDesigner({
 
           {/* Canvas Area */}
           <div className="flex-1 bg-slate-100/50 overflow-auto p-8 flex flex-col items-center justify-start relative">
-            {/* Page Size Selector */}
-            <div className="mb-4 flex items-center gap-3">
-              <Select value={pageSize} onValueChange={(val: any) => setPageSize(val)}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="a4-landscape">A4 — Landscape</SelectItem>
-                  <SelectItem value="a4-portrait">A4 — Portrait</SelectItem>
-                </SelectContent>
-              </Select>
-              <Badge variant="outline" className="text-xs">
-                {width} × {height} px
-              </Badge>
+            {/* Canvas Settings */}
+            <div className="mb-4 w-full max-w-4xl space-y-3">
+              {/* Page Size & Background */}
+              <div className="flex items-center gap-3 flex-wrap">
+                <Select value={pageSize} onValueChange={(val: any) => setPageSize(val)}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="a4-landscape">A4 — Landscape</SelectItem>
+                    <SelectItem value="a4-portrait">A4 — Portrait</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Badge variant="outline" className="text-xs">
+                  {width} × {height} px
+                </Badge>
+
+                {/* Background Image Upload */}
+                <div className="flex items-center gap-2 ml-auto">
+                  <Label className="text-sm font-medium whitespace-nowrap">Background:</Label>
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                          const base64 = event.target?.result as string;
+                          setBackgroundImage(base64);
+                          toast.success("Background image uploaded");
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="hidden"
+                    id="bg-upload"
+                  />
+                  <label
+                    htmlFor="bg-upload"
+                    className="px-3 py-1.5 text-xs border border-slate-300 rounded-md hover:bg-slate-50 cursor-pointer transition-colors"
+                  >
+                    Upload Image
+                  </label>
+                  {backgroundImage && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setBackgroundImage("");
+                        toast.success("Background cleared");
+                      }}
+                      className="h-7 text-xs"
+                    >
+                      Clear
+                    </Button>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div
@@ -278,7 +324,11 @@ export function TemplateDesigner({
                 width: width * scale,
                 height: height * scale,
                 transformOrigin: "center top",
-                border: "2px solid #cbd5e1"
+                border: "2px solid #cbd5e1",
+                backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
               }}
               onClick={() => setSelectedId(null)}
             >
