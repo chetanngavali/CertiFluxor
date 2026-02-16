@@ -23,6 +23,11 @@ import {
     Code2,
     Lock,
     Globe,
+    Type,
+    Image as ImageIcon,
+    QrCode,
+    Variable,
+    Settings,
     Activity
 } from "lucide-react";
 
