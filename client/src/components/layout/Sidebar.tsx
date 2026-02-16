@@ -46,10 +46,12 @@ function SidebarContent() {
               <div
                 className={cn(
                   "group flex items-center gap-x-3 rounded-lg p-3 text-sm font-semibold transition-all duration-200 cursor-pointer",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
                   isActive
                     ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20"
                     : "text-slate-400 hover:bg-slate-800 hover:text-white active:scale-95"
                 )}
+                tabIndex={0}
               >
                 <item.icon
                   className={cn(

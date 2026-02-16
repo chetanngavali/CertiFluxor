@@ -70,7 +70,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/templates">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer group active:scale-[0.98]">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer group active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" tabIndex={0}>
               <div className="h-12 w-12 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition-colors">
                 <FileEdit className="w-6 h-6 text-indigo-600 group-hover:text-white transition-colors" />
               </div>
@@ -80,7 +80,7 @@ export default function Home() {
           </Link>
 
           <Link href="/history">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer group active:scale-[0.98]">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer group active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" tabIndex={0}>
               <div className="h-12 w-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 transition-colors">
                 <HistoryIcon className="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors" />
               </div>
@@ -108,7 +108,7 @@ export default function Home() {
         </div>
         <div className="flex gap-3 w-full sm:w-auto">
           <Link href="/templates" className="flex-1 sm:flex-none">
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2">
+            <button className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
               <FileEdit className="w-4 h-4" />
               <span className="hidden sm:inline">Create Template</span>
               <span className="sm:hidden">New</span>
@@ -119,7 +119,7 @@ export default function Home() {
             size="icon"
             onClick={handleLogout}
             disabled={logoutMutation.isPending}
-            className="hover:bg-slate-100 active:scale-95 transition-all"
+            className="hover:bg-slate-100 active:scale-95 transition-all focus-visible:ring-indigo-500"
             aria-label="Sign out"
           >
             <LogOut className="w-4 h-4" />

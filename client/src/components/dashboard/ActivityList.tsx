@@ -40,6 +40,24 @@ export function ActivityList({ activities, loading = false }: ActivityListProps)
         );
     }
 
+    // Empty state
+    if (!activities || activities.length === 0) {
+        return (
+            <Card className="shadow-sm border-slate-200">
+                <CardHeader>
+                    <CardTitle className="text-xl font-bold text-slate-900">Recent Activity</CardTitle>
+                </CardHeader>
+                <CardContent className="h-[300px] flex flex-col items-center justify-center text-center">
+                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                        <Clock className="w-8 h-8 text-slate-400" />
+                    </div>
+                    <p className="text-slate-900 font-semibold mb-1">No recent activity</p>
+                    <p className="text-sm text-slate-500">Your activity log will appear here</p>
+                </CardContent>
+            </Card>
+        );
+    }
+
     const getStatusIcon = (status: Activity['status']) => {
         switch (status) {
             case 'success':
@@ -92,6 +110,19 @@ export function ActivityList({ activities, loading = false }: ActivityListProps)
                             </div>
                         </div>
                     ))}
+                </div>
+
+                {/* View All Link */}
+                <div className="mt-4 pt-4 border-t border-slate-100">
+                    <a
+                        href="/history"
+                        className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 flex items-center justify-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 rounded-md py-2"
+                    >
+                        View all activity
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
                 </div>
             </CardContent>
         </Card>
