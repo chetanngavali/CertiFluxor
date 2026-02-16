@@ -7,55 +7,97 @@ interface LogoProps extends React.SVGProps<SVGSVGElement> {
 
 export function Logo({ className, ...props }: LogoProps) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 256 256"
-            className={cn("text-blue-600 fill-current", className)}
-            {...props}
-        >
-            <rect width="256" height="256" fill="none" />
-            {/* Outer Shield/Hexagon Shape - representing Security/Credential */}
-            <path
-                d="M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.15A16,16,0,0,0,24,80.11v95.78a16,16,0,0,0,8.32,14l88,48.15a15.88,15.88,0,0,0,15.36,0l88-48.15a16,16,0,0,0,8.32-14V80.11A16,16,0,0,0,223.68,66.15ZM216,175.89l-88,48.15L40,175.89V80.11L128,32l88,48.15Z"
-                fill="currentColor"
-                opacity="0.2"
-            />
-            {/* Inner tick/flux mark - representing Verification/Flow */}
-            <path
-                d="M178.34,90.34l-64,64a8,8,0,0,1-11.31,0l-32-32a8,8,0,0,1,11.31-11.31L108.69,137l58.34-58.34a8,8,0,0,1,11.31,11.31Z"
-                fill="currentColor"
-                className="text-blue-600"
-            />
-            {/* Accent elements for "Flux" */}
-            <circle cx="128" cy="128" r="96" fill="none" stroke="currentColor" strokeWidth="16" strokeLinecap="round" opacity="0.1" />
-        </svg>
+        <LogoIcon className={cn("inline-block", className)} {...props} />
     );
 }
 
+// Final Polish based on visual reference:
+// - Shield Base (Dark)
+// - Document fold at top-right
+// - Check/Lock integrated
+// - Two distinct blue swooshes wrapping around
 export function LogoIcon({ className, ...props }: LogoProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 40 40"
+            viewBox="0 0 500 500"
             fill="none"
-            className={cn("h-8 w-8", className)}
+            className={cn("h-10 w-10 text-slate-900", className)}
             {...props}
         >
-            <rect width="40" height="40" rx="8" className="fill-blue-600" />
+            {/* DEFINE GRADIENTS */}
+            <defs>
+                <linearGradient id="fluxGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#3B82F6" /> {/* bright blue */}
+                    <stop offset="100%" stopColor="#2563EB" /> {/* darker blue */}
+                </linearGradient>
+            </defs>
+
+            {/* MAIN SHIELD BODY */}
+            {/* A slightly rounded shield shape */}
             <path
+                d="M150,130 C150,110 170,110 170,110 H290 L330,150 V300 C330,380 240,430 240,430 C240,430 150,380 150,300 V130 Z"
+                fill="currentColor" // Uses text-color (slate-900 usually)
+            />
+
+            {/* DOCUMENT LINES (White) */}
+            <path
+                d="M190 160 H290"
                 stroke="white"
-                strokeWidth="2.5"
+                strokeWidth="12"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 20L17 25L28 14"
+                opacity="0.9"
             />
             <path
+                d="M190 190 H290"
                 stroke="white"
-                strokeWidth="2.5"
+                strokeWidth="12"
+                strokeLinecap="round"
+                opacity="0.9"
+            />
+            <path
+                d="M190 220 H260"
+                stroke="white"
+                strokeWidth="12"
+                strokeLinecap="round"
+                opacity="0.9"
+            />
+
+            {/* PADLOCK / CHECKMARK SYMBOL (White Cutout) */}
+            {/* The Lock Shackle */}
+            <path
+                d="M210 290 V270 C210 250 225 240 240 240 C255 240 270 250 270 270 V290"
+                stroke="white"
+                strokeWidth="18"
+                strokeLinecap="round"
+                fill="none"
+            />
+            {/* The Checkmark Body */}
+            <path
+                d="M220 320 L240 340 L270 290"
+                stroke="white"
+                strokeWidth="22"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M20 32C26.6274 32 32 26.6274 32 20C32 13.3726 26.6274 8 20 8C13.3726 8 8 13.3726 8 20C8 26.6274 13.3726 32 20 32Z"
-                opacity="0.3"
+                fill="none"
+            />
+
+            {/* FLUX SWOOSHES (The Blue Curves) */}
+            {/* Lower Swoosh - wraps bottom left to middle right */}
+            <path
+                d="M130 380 C130 380 160 420 230 400 C300 380 370 280 390 200"
+                stroke="url(#fluxGradient)"
+                strokeWidth="28"
+                strokeLinecap="round"
+                fill="none"
+            />
+            {/* Upper Swoosh - parallel above */}
+            <path
+                d="M140 330 C140 330 170 370 240 350 C310 330 380 230 400 150"
+                stroke="#60A5FA" // Lighter blue accent
+                strokeWidth="22"
+                strokeLinecap="round"
+                fill="none"
             />
         </svg>
     )
