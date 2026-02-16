@@ -28,7 +28,7 @@ import { LogoIcon } from "@/components/ui/logo";
 
 const authSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
 type AuthFormValues = z.infer<typeof authSchema>;
@@ -42,6 +42,12 @@ export default function AuthPage() {
     const params = new URLSearchParams(window.location.search);
     const initialMode = params.get("mode") === "register" ? "register" : "login";
     const [activeTab, setActiveTab] = useState(initialMode);
+
+    useEffect(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("mode", activeTab);
+        window.history.pushState({}, "", url.toString());
+    }, [activeTab]);
 
     const loginForm = useForm<AuthFormValues>({
         resolver: zodResolver(authSchema),
