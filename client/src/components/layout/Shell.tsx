@@ -8,7 +8,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <MobileSidebar />
       <main className="flex-1 lg:pl-64">
         <ScrollArea className="h-screen">
-          <div className="space-y-8 pb-20 pt-20 lg:pt-8">
+          <div className="px-8 space-y-8 pb-20 pt-20 lg:pt-8">
             {children}
           </div>
         </ScrollArea>
