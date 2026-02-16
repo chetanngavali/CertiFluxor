@@ -1,9 +1,11 @@
 
 import { db } from "./db";
 import {
+  users,
   templates,
   apiKeys,
   generations,
+  type User,
   type Template,
   type InsertTemplate,
   type ApiKey,
@@ -13,6 +15,11 @@ import {
 import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
+  // Users
+  getUser(id: number): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
+  createUser(user: any): Promise<User>;
+
   // Templates
   getTemplates(): Promise<Template[]>;
   getTemplate(id: string): Promise<Template | undefined>;
@@ -31,6 +38,22 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
+  // Users
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+
+  async createUser(user: any): Promise<User> {
+    const [newUser] = await db.insert(users).values(user).returning();
+    return newUser;
+  }
+
   // Templates
   async getTemplates(): Promise<Template[]> {
     return await db.select().from(templates).orderBy(desc(templates.createdAt));

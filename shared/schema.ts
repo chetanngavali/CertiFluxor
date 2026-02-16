@@ -5,6 +5,12 @@ import { z } from "zod";
 
 // === TABLE DEFINITIONS ===
 
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").notNull().unique(),
+  role: text("role").notNull().default("user"), // "admin" | "user"
+});
+
 export const templates = pgTable("templates", {
   id: text("id").primaryKey(), // Using text ID for friendly IDs like "course-101" or UUIDs
   name: text("name").notNull(),

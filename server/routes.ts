@@ -7,22 +7,22 @@ import { z } from "zod";
 import { insertTemplateSchema, insertApiKeySchema } from "@shared/schema";
 import { randomBytes } from "crypto";
 import seed from "./seed";
+import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
 
+  // Setup Replit Auth
+  await setupAuth(app);
+  registerAuthRoutes(app);
+
   // Seed data on startup
   seed().catch(console.error);
 
   // --- Middleware for API Key Auth ---
   const authenticateApiKey = async (req: any, res: any, next: any) => {
-    // Skip auth for internal API routes used by the frontend (for now)
-    // In a real app, frontend would use session auth and external tools use API keys.
-    // Here, we'll check headers. If 'x-api-key' is present, we validate it.
-    // If not, we assume it's the frontend (which is open for this demo, or we could add session auth).
-    
     const apiKey = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
     
     if (req.path.startsWith('/api/v1/certificates/generate') && apiKey) {
@@ -31,7 +31,14 @@ export async function registerRoutes(
             return res.status(401).json({ message: 'Invalid or inactive API Key' });
         }
         req.apiKey = keyRecord; // Attach key info to request
+        return next();
     }
+    
+    // Fallback to session auth for other /api routes
+    if (req.path.startsWith('/api/v1/')) {
+      return isAuthenticated(req, res, next);
+    }
+    
     next();
   };
 
