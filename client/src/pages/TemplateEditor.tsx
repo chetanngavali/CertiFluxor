@@ -40,13 +40,15 @@ export default function TemplateEditor() {
 
   useEffect(() => {
     if (template) {
-      setElements(template.elements);
+      // Ensure elements is always an array
+      const templateElements = Array.isArray(template.elements) ? template.elements : [];
+      setElements(templateElements);
       setName(template.name);
     }
   }, [template]);
 
   // Preview elements with substituted data
-  const previewElements = elements.map(el => {
+  const previewElements = Array.isArray(elements) ? elements.map(el => {
     if (el.type === "dynamicText" && el.bindingField && excelData.length > 0) {
       const row = excelData[previewRowIndex];
       return {
@@ -55,7 +57,7 @@ export default function TemplateEditor() {
       };
     }
     return el;
-  });
+  }) : [];
 
   const handleSave = () => {
     updateTemplate.mutate({

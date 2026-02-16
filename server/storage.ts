@@ -68,20 +68,42 @@ export class DatabaseStorage implements IStorage {
     return newUser;
   }
 
+
+  // Helper to ensure JSON fields are properly parsed
+  private parseTemplate(template: any): Template {
+    if (template && template.elements) {
+      // If elements is a string, parse it
+      if (typeof template.elements === 'string') {
+        try {
+          template.elements = JSON.parse(template.elements);
+        } catch (e) {
+          console.error('Failed to parse template elements:', e);
+          template.elements = [];
+        }
+      }
+      // Ensure it's always an array
+      if (!Array.isArray(template.elements)) {
+        template.elements = [];
+      }
+    }
+    return template;
+  }
+
   // Templates
   async getTemplates(): Promise<Template[]> {
-    return await db.select().from(templates).orderBy(desc(templates.createdAt));
+    const results = await db.select().from(templates).orderBy(desc(templates.createdAt));
+    return results.map(t => this.parseTemplate(t));
   }
 
   async getTemplate(id: string): Promise<Template | undefined> {
     const [template] = await db.select().from(templates).where(eq(templates.id, id));
-    return template;
+    return template ? this.parseTemplate(template) : undefined;
   }
 
   async createTemplate(template: InsertTemplate): Promise<Template> {
     await db.insert(templates).values(template);
     const [newTemplate] = await db.select().from(templates).where(eq(templates.id, template.id));
-    return newTemplate;
+    return this.parseTemplate(newTemplate);
   }
 
   async updateTemplate(id: string, updates: Partial<InsertTemplate>): Promise<Template> {
@@ -90,7 +112,7 @@ export class DatabaseStorage implements IStorage {
       .where(eq(templates.id, id));
 
     const [updated] = await db.select().from(templates).where(eq(templates.id, id));
-    return updated;
+    return this.parseTemplate(updated);
   }
 
   async deleteTemplate(id: string): Promise<void> {
