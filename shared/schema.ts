@@ -66,6 +66,8 @@ export interface TemplateElement {
   fontFamily?: string;
   fontSize?: number;
   fontWeight?: string | number;
+  fontStyle?: "normal" | "italic";
+  textDecoration?: "none" | "underline" | "line-through";
   color?: string;
   textAlign?: "left" | "center" | "right";
 
@@ -75,6 +77,12 @@ export interface TemplateElement {
   borderWidth?: number;
   borderRadius?: number;
   src?: string; // For images
+
+  // Shape specific
+  shapeType?: "rectangle" | "circle" | "star";
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
 }
 
 export interface Theme {
