@@ -432,12 +432,19 @@ export default function LandingPage() {
                                 }
                             ].map((f, i) => (
                                 <motion.div key={i} variants={fadeInUp}>
-                                    <div className="group p-8 rounded-2xl border border-slate-200 bg-white hover:border-blue-600/30 hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-300">
-                                        <div className="bg-slate-50 w-12 h-12 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <div className="group h-full p-8 rounded-2xl border border-slate-100 bg-white hover:border-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-bl-full pointer-events-none" />
+
+                                        <div className="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center mb-6 text-slate-700 group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-sm group-hover:shadow-lg group-hover:shadow-blue-500/20 relative z-10">
                                             {f.icon}
                                         </div>
-                                        <h3 className="text-xl font-bold mb-3 text-slate-900">{f.title}</h3>
-                                        <p className="text-slate-500 leading-relaxed text-sm font-medium">{f.desc}</p>
+
+                                        <h3 className="text-xl font-bold mb-3 text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors">{f.title}</h3>
+                                        <p className="text-slate-500 leading-relaxed text-sm font-medium mb-6">{f.desc}</p>
+
+                                        <div className="flex items-center text-blue-600 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300">
+                                            Learn more <ArrowRight className="ml-2 h-4 w-4" />
+                                        </div>
                                     </div>
                                 </motion.div>
                             ))}
