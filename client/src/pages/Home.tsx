@@ -1,26 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { Shell } from "@/components/layout/Shell";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell
-} from "recharts";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { LogOut, Award, FileEdit, Zap, ArrowUpRight, Clock, CheckCircle, XCircle, History as HistoryIcon } from "lucide-react";
-import { format } from "date-fns";
+import { LogOut, Award, FileEdit, Zap, History as HistoryIcon } from "lucide-react";
 import { Link } from "wouter";
+import { StatCard } from "@/components/dashboard/StatCard";
+import { BarChartSection } from "@/components/dashboard/BarChartSection";
+import { ActivityList } from "@/components/dashboard/ActivityList";
 
 export default function Home() {
   const { user, logoutMutation } = useAuth();
 
-  const { data: stats } = useQuery({
+  const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
       // Mock stats for dashboard
@@ -29,10 +21,10 @@ export default function Home() {
         totalGenerated: 1450,
         successRate: 98.5,
         recentActivity: [
-          { id: 1, action: "Certificate Generated", recipient: "Alice Smith", date: new Date().toISOString(), status: "success" },
-          { id: 2, action: "Template Updated", recipient: "Course Completion v2", date: new Date(Date.now() - 3600000).toISOString(), status: "info" },
-          { id: 3, action: "Certificate Generated", recipient: "Bob Jones", date: new Date(Date.now() - 7200000).toISOString(), status: "failed" },
-          { id: 4, action: "API Key Created", recipient: "Marketing Team", date: new Date(Date.now() - 86400000).toISOString(), status: "success" },
+          { id: 1, action: "Certificate Generated", recipient: "Alice Smith", date: new Date().toISOString(), status: "success" as const },
+          { id: 2, action: "Template Updated", recipient: "Course Completion v2", date: new Date(Date.now() - 3600000).toISOString(), status: "info" as const },
+          { id: 3, action: "Certificate Generated", recipient: "Bob Jones", date: new Date(Date.now() - 7200000).toISOString(), status: "failed" as const },
+          { id: 4, action: "API Key Created", recipient: "Marketing Team", date: new Date(Date.now() - 86400000).toISOString(), status: "success" as const },
         ],
         chartData: [
           { name: 'Mon', value: 40 },
@@ -50,21 +42,27 @@ export default function Home() {
 
   const handleLogout = () => {
     logoutMutation.mutate();
-    // Redirect handled by ProtectedRoute/AuthContext
   };
 
-  if (!user) return null; // Should be handled by ProtectedRoute
+  if (!user) return null;
 
   // === USER DASHBOARD ===
   if (user.role !== 'admin') {
     return (
       <Shell>
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold font-display text-slate-900">Welcome, {user.username}!</h1>
+            <h1 className="text-3xl md:text-4xl font-bold font-display text-slate-900">
+              Welcome, {user.username}!
+            </h1>
             <p className="text-slate-500 mt-1">Manage your certificates and templates.</p>
           </div>
-          <Button variant="outline" onClick={handleLogout} disabled={logoutMutation.isPending}>
+          <Button
+            variant="outline"
+            onClick={handleLogout}
+            disabled={logoutMutation.isPending}
+            className="w-full sm:w-auto"
+          >
             <LogOut className="w-4 h-4 mr-2" />
             Sign Out
           </Button>
@@ -72,22 +70,22 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/templates">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer group active:scale-[0.98]">
               <div className="h-12 w-12 bg-indigo-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition-colors">
                 <FileEdit className="w-6 h-6 text-indigo-600 group-hover:text-white transition-colors" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">My Templates</h3>
-              <p className="text-slate-500">Create and design new certificate templates.</p>
+              <p className="text-slate-600">Create and design new certificate templates.</p>
             </div>
           </Link>
 
           <Link href="/history">
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200 cursor-pointer group active:scale-[0.98]">
               <div className="h-12 w-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 transition-colors">
                 <HistoryIcon className="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Generation History</h3>
-              <p className="text-slate-500">View past certificates and download copies.</p>
+              <p className="text-slate-600">View past certificates and download copies.</p>
             </div>
           </Link>
         </div>
@@ -96,131 +94,78 @@ export default function Home() {
   }
 
   // === ADMIN DASHBOARD ===
-  if (!stats) return <div className="p-8">Loading stats...</div>;
-
   return (
     <Shell>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold font-display text-slate-900">Admin Dashboard</h1>
-          <p className="text-slate-500 mt-1">System-wide overview for {user.username}</p>
+          <h1 className="text-3xl md:text-4xl font-bold font-display text-slate-900">
+            Admin Dashboard
+          </h1>
+          <p className="text-slate-600 mt-1 text-sm md:text-base">
+            System-wide overview for {user.username}
+          </p>
         </div>
-        <div className="flex gap-3">
-          <Link href="/templates">
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2">
+        <div className="flex gap-3 w-full sm:w-auto">
+          <Link href="/templates" className="flex-1 sm:flex-none">
+            <button className="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-5 py-2.5 rounded-lg font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all flex items-center justify-center gap-2">
               <FileEdit className="w-4 h-4" />
-              Create Template
+              <span className="hidden sm:inline">Create Template</span>
+              <span className="sm:hidden">New</span>
             </button>
           </Link>
-          <Button variant="outline" onClick={handleLogout} disabled={logoutMutation.isPending}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleLogout}
+            disabled={logoutMutation.isPending}
+            className="hover:bg-slate-100 active:scale-95 transition-all"
+            aria-label="Sign out"
+          >
             <LogOut className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Stats Cards Grid - Responsive: 1 col mobile, 2 cols tablet, 3 cols desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <StatCard
           title="Total Templates"
-          value={stats.totalTemplates}
+          value={stats?.totalTemplates || 0}
           icon={FileEdit}
-          trend="+2 this week"
+          trend={stats ? "+2 this week" : undefined}
           color="bg-blue-500"
+          loading={statsLoading}
         />
         <StatCard
           title="Certificates Generated"
-          value={stats.totalGenerated.toLocaleString()}
+          value={stats?.totalGenerated.toLocaleString() || "0"}
           icon={Award}
-          trend="+12% vs last month"
+          trend={stats ? "+12% vs last month" : undefined}
           color="bg-indigo-500"
+          loading={statsLoading}
         />
         <StatCard
           title="Success Rate"
-          value={`${stats.successRate}%`}
+          value={stats ? `${stats.successRate}%` : "0%"}
           icon={Zap}
-          trend="Stable"
+          trend={stats ? "Stable" : undefined}
           color="bg-emerald-500"
+          loading={statsLoading}
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="shadow-sm border-slate-200">
-          <CardHeader>
-            <CardTitle>Generation Volume</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stats.chartData}>
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
-                <Tooltip
-                  cursor={{ fill: 'transparent' }}
-                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {stats.chartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 4 ? '#6366f1' : '#cbd5e1'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-sm border-slate-200">
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {stats.recentActivity.map((item: any) => (
-                <div key={item.id} className="flex items-start gap-4">
-                  <div className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1",
-                    item.status === 'success' && "bg-emerald-100 text-emerald-600",
-                    item.status === 'failed' && "bg-red-100 text-red-600",
-                    item.status === 'info' && "bg-blue-100 text-blue-600",
-                  )}>
-                    {item.status === 'success' && <CheckCircle className="w-4 h-4" />}
-                    {item.status === 'failed' && <XCircle className="w-4 h-4" />}
-                    {item.status === 'info' && <Clock className="w-4 h-4" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900">{item.action}</p>
-                    <p className="text-xs text-slate-500 truncate">{item.recipient}</p>
-                  </div>
-                  <div className="text-xs text-slate-400 whitespace-nowrap">
-                    {format(new Date(item.date), 'MMM d, h:mm a')}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      {/* Charts Section - Stacks on mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <BarChartSection
+          data={stats?.chartData || []}
+          loading={statsLoading}
+        />
+        <ActivityList
+          activities={stats?.recentActivity || []}
+          loading={statsLoading}
+        />
       </div>
     </Shell>
   );
-}
-
-function StatCard({ title, value, icon: Icon, trend, color }: any) {
-  return (
-    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <h3 className="text-2xl font-bold font-display text-slate-900 mt-2">{value}</h3>
-        </div>
-        <div className={cn("p-2 rounded-lg text-white shadow-lg shadow-opacity-20", color)}>
-          <Icon className="w-5 h-5" />
-        </div>
-      </div>
-      <div className="mt-4 flex items-center text-xs font-medium text-emerald-600">
-        <ArrowUpRight className="w-3 h-3 mr-1" />
-        {trend}
-      </div>
-    </div>
-  );
-}
-
-function cn(...inputs: (string | undefined | null | false)[]) {
-  return inputs.filter(Boolean).join(" ");
 }
