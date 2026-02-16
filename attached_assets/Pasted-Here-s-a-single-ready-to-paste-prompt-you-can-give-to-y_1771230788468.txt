@@ -1,0 +1,261 @@
+Here’s a single, ready‑to‑paste prompt you can give to your coding AI to generate the full system (frontend + backend), with enterprise‑grade UI/UX and mobile‑friendly design.
+
+***
+
+I want to build an **enterprise‑grade Auto Certificate Generator platform** with:
+
+- A **React** frontend for designing certificates (from Excel data) with a professional, responsive UI (desktop + mobile).  
+- A **backend API** (Node + Express or similar) that LMS portals or event systems can call using an **API key** to generate certificates.
+
+Please generate production‑ready code and explain briefly how to use it.
+
+***
+
+## 1. Tech stack
+
+- Frontend:
+  - React (Vite or CRA compatible; no Next.js‑only APIs).
+  - TypeScript preferred; if not, clean JavaScript with JSDoc types.
+  - Component library or utility CSS:
+    - Use something like **Tailwind CSS** or a modern UI library (e.g. MUI/Chakra) to quickly build a clean, enterprise UI.
+- Backend:
+  - Node.js + Express (or Fastify) in TypeScript or clean JS.
+  - Use server‑side libraries to generate PDFs/PNGs (e.g. Puppeteer/Playwright + HTML templates, or pdfkit/html-pdf).  
+- Data:
+  - Excel parsing via **SheetJS (xlsx)** on frontend or backend.
+  - For persistence, assume a simple in‑memory or JSON‑file store, but structure code so I can swap in a DB later (Mongo/Postgres).
+
+At the top, include the exact `npm`/`pnpm` install commands for all required packages (React side + backend side):  
+- `xlsx`, `html2canvas` or `react-to-print` (if used), PDF/image generation libs, drag‑drop lib (`react-rnd` or `react-draggable`), UI library (Tailwind/MUI/Chakra), Express, CORS, dotenv, etc.
+
+***
+
+## 2. Excel handling (dynamic + auto capture)
+
+I will upload `.xlsx` or `.csv` files.
+
+Requirements:
+
+- Use `xlsx` to parse the file in the browser (frontend).  
+- The sheet will **at least** have these columns: `name`, `course`, `date`, but may have extra columns.
+- The code must **automatically capture all column headers dynamically**, not hard‑coded:
+  - Read the first row as headers and store in `headers: string[]`.
+  - Convert rows into objects: `type CertificateData = Record<string, any>`.
+  - I must be able to access `row[headerName]` for any header.
+- Expose from an `ExcelUploader` component:
+  - `headers: string[]`
+  - `rows: CertificateData[]`
+- UI should show:
+  - A table preview (paginated or scrollable) of uploaded data.
+  - Basic validation (show message if required fields `name`, `course`, `date` are missing).
+
+***
+
+## 3. Enterprise‑grade UI/UX (responsive)
+
+I want a **professional, enterprise interface** suitable for SaaS, with modern design and mobile‑friendly layout.
+
+- Layout:
+  - Top navigation bar with app name/logo, user menu placeholder.
+  - Left sidebar (collapsible on mobile) with sections: Dashboard, Templates, Certificates, Settings, API Keys.
+  - Main content area with cards/sections.
+- UX:
+  - Clear stepper or progress indicator: **Upload → Design → Preview & Export → API Integration**.
+  - Use modals/drawers for:
+    - Creating/editing templates.
+    - Viewing API keys.
+  - Use toasts/snackbars for success/error messages.
+- Responsiveness:
+  - On mobile:
+    - Sidebar collapses into a hamburger menu.
+    - Canvas area is scrollable/zoomable.
+    - Forms and tables stack vertically with good spacing.
+- Design:
+  - Clean typography, neutral colors, clear buttons (Primary/Secondary/Danger states).
+  - Dark/light theme support is a plus, but not mandatory.
+- Please include:
+  - Example **Dashboard** page (total certificates generated, templates count, recent activity list).
+  - **Settings/API Keys** page to manage API keys (even if data is mocked).
+
+***
+
+## 4. Certificate designer (full customization)
+
+I want a visual designer where admins can create certificate templates without touching code.
+
+- Canvas:
+  - Represents A4 page (config for landscape/portrait).
+  - Zoom controls (e.g., 50%, 75%, 100%).
+- Elements (TemplateElement):
+  - Types: `"dynamicText" | "staticText" | "image" | "shape"`.
+  - Fields: id, type, x, y, width, height, rotation, zIndex, style properties.
+  - For text:
+    - `bindingField?: string` for dynamic text (Excel column).
+    - Font family, size, weight, color, textAlign, letterSpacing, lineHeight.
+  - For image:
+    - Image URL/base64 reference, scaling.
+  - For shape:
+    - Background color, border color, border radius, thickness.
+- Interactions:
+  - Drag & drop on canvas (use a library like `react-rnd` or `react-draggable`).
+  - Resize handles where appropriate.
+  - Click to select element → editable in a **side properties panel**.
+- Side panel:
+  - Element list with layers order (bring forward/backward).
+  - Properties form:
+    - For dynamic text: dropdown of `headers` to bind `bindingField`.
+    - For static text: textbox to edit content.
+    - Style controls for fonts, colors, alignment, etc.
+- Templates:
+  - `Template` model: `{ id, name, elements: TemplateElement[], baseThemeId }`.
+  - Features:
+    - Create, rename, duplicate, delete templates.
+    - Save templates in `localStorage` (or mocked API), auto‑load on app start.
+
+***
+
+## 5. Theme system + auto theme selection
+
+Define a `Theme` model and auto selection logic:
+
+- `Theme` fields:
+  - id, name, backgroundColor or backgroundImage, primary/secondary text colors, border styles, default font families, etc.
+- Auto theme selector:
+  - A function that receives `row: CertificateData` and returns `themeId`.
+  - Example rules:
+    - If `course` includes `"Security"` → `"darkTheme"`.
+    - If `score >= 90` → `"goldTheme"`.
+    - Else → `"classicTheme"`.
+- Manual override:
+  - UI dropdown to pick a fixed theme for all certificates.
+- Excel override:
+  - If the uploaded data has a `theme` column, allow that value to override the auto logic for that row.
+- Ensure the designer can preview the certificate with different themes applied.
+
+***
+
+## 6. Preview & export (frontend)
+
+- Preview:
+  - Show a preview of one certificate at a time with:
+    - Buttons: Previous, Next, Jump to index.
+    - A summary (e.g., “Showing 5 of 120 records”).
+  - All dynamic text elements should render with `row[bindingField] ?? ""`.
+- Export options (frontend side):
+  - Export single certificate as PNG or PDF.
+  - Optionally, export all as multi‑page PDF (can be just an example implementation).
+  - Use `html2canvas` + `jspdf` or `react-to-print` (please wire it completely so I can run it).
+
+***
+
+## 7. Backend API (API key based service)
+
+I want a backend that LMS portals or event platforms can call.
+
+- Core endpoints (Express):
+
+  1) `POST /api/v1/certificates/generate`  
+     - Auth via API key in header:
+       - `Authorization: Bearer <API_KEY>` or `x-api-key: <API_KEY>`.
+     - Request body (single or batch):
+       ```json
+       {
+         "templateId": "course-101",
+         "rows": [
+           {
+             "name": "Student Name",
+             "course": "React Basics",
+             "date": "2026-02-16",
+             "score": 92,
+             "email": "student@example.com"
+           }
+         ]
+       }
+       ```
+     - Behaviour:
+       - Load template + theme config from store.
+       - For each row, fill placeholders using same dynamic key logic (`row[fieldName]`).
+       - Render PDF (single file with multiple pages) or individual files.
+       - Return either:
+         - A single PDF binary (with proper headers), or
+         - JSON with `certificateUrls` (assume they are stored on disk/public folder).
+
+  2) `GET /api/v1/templates`  
+     - For now, can return mocked templates with IDs that match the frontend.
+
+  3) `POST /api/v1/apikeys/validate` (optional)  
+     - Demonstrate API key validation logic.
+
+- API key system:
+  - Simple middleware that:
+    - Reads key from header.
+    - Validates against an in‑memory list: `{ key, ownerName, allowedTemplates }`.
+    - If invalid, returns 401.
+- Structure the backend so I can later plug in a real DB and storage.
+
+***
+
+## 8. LMS / Events integration example
+
+Include in the README or comments:
+
+- Example `curl` request or Node snippet showing how an LMS backend would call:
+
+  ```http
+  POST /api/v1/certificates/generate
+  x-api-key: <LMS_API_KEY>
+  Content-Type: application/json
+
+  {
+    "templateId": "bootcamp-2026",
+    "rows": [
+      { "name": "Alice", "course": "CyberSec Bootcamp", "date": "2026-03-01" },
+      { "name": "Bob", "course": "CyberSec Bootcamp", "date": "2026-03-01" }
+    ]
+  }
+  ```
+
+- Response example (JSON with URL(s) or info).
+
+***
+
+## 9. Project structure & explanation
+
+Provide:
+
+- Suggested folder structure for frontend and backend:
+  - `frontend/src/components/...`
+  - `frontend/src/pages/...`
+  - `backend/src/routes/...`, `backend/src/services/...`
+- Snippable, complete code blocks for key parts:
+  - `App` (React shell with routing/stepper).
+  - `ExcelUploader`.
+  - `TemplateDesigner` + `CertificateCanvas`.
+  - `ThemeSelector`.
+  - `PreviewAndExport`.
+  - Backend `index.ts`/`server.js`, routes, and middleware.
+- A minimal **How to run**:
+  - Commands to install deps.
+  - Dev scripts for frontend and backend.
+  - URL where the frontend is served and how it calls the backend (CORS config).
+
+***
+
+## 10. Quality expectations
+
+- Clean, modular code with clear naming, no “TODO” placeholders.
+- Types/interfaces for:
+  - `CertificateData = Record<string, any>`.
+  - `TemplateElement`.
+  - `Template`.
+  - `Theme`.
+- Focus on:
+  - Full customization (positions, fonts, colors, backgrounds, borders, orientation).
+  - Enterprise‑looking, mobile‑friendly UI.
+  - Clear separation between frontend designer and backend API service.
+
+Please output everything in well‑organized sections so I can create the files directly from your answer.
+
+***
+
+You can use this exact prompt with your coding assistant to generate the full enterprise‑style, mobile‑friendly system.
