@@ -43,6 +43,11 @@ interface TemplateDesignerProps {
   height: number;
   scale?: number;
   headers: string[]; // For dynamic binding
+  backgroundImage?: string;
+  onBackgroundImageChange?: (url: string) => void;
+  backgroundOpacity?: number;
+  onBackgroundOpacityChange?: (val: number) => void;
+  onDimensionsChange?: (width: number, height: number) => void;
 }
 
 export function TemplateDesigner({
@@ -51,13 +56,19 @@ export function TemplateDesigner({
   width,
   height,
   scale: initialScale = 1,
-  headers = []
+  headers = [],
+  backgroundImage = "",
+  onBackgroundImageChange,
+  backgroundOpacity = 100,
+  onBackgroundOpacityChange,
+  onDimensionsChange,
 }: TemplateDesignerProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [scale, setScale] = useState(initialScale);
-  const [pageSize, setPageSize] = useState<"a4-landscape" | "a4-portrait">("a4-landscape");
+  const [pageSize, setPageSize] = useState<"a4-landscape" | "a4-portrait">(
+    width > height ? "a4-landscape" : "a4-portrait"
+  );
   const [showGrid, setShowGrid] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const selectedElement = elements.find(el => el.id === selectedId);
@@ -257,7 +268,18 @@ export function TemplateDesigner({
             <div className="mb-4 w-full max-w-4xl space-y-3">
               {/* Page Size & Background */}
               <div className="flex items-center gap-3 flex-wrap">
-                <Select value={pageSize} onValueChange={(val: any) => setPageSize(val)}>
+                <Select
+                  value={pageSize}
+                  onValueChange={(val: "a4-landscape" | "a4-portrait") => {
+                    setPageSize(val);
+                    if (val === "a4-landscape") {
+                      onDimensionsChange?.(1123, 794);
+                    } else {
+                      onDimensionsChange?.(794, 1123);
+                    }
+                    toast.success(`Switched to ${val === "a4-landscape" ? "Landscape" : "Portrait"}`);
+                  }}
+                >
                   <SelectTrigger className="w-48">
                     <SelectValue />
                   </SelectTrigger>
@@ -282,7 +304,7 @@ export function TemplateDesigner({
                         const reader = new FileReader();
                         reader.onload = (event) => {
                           const base64 = event.target?.result as string;
-                          setBackgroundImage(base64);
+                          onBackgroundImageChange?.(base64);
                           toast.success("Background image uploaded");
                         };
                         reader.readAsDataURL(file);
@@ -302,7 +324,7 @@ export function TemplateDesigner({
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setBackgroundImage("");
+                        onBackgroundImageChange?.("");
                         toast.success("Background cleared");
                       }}
                       className="h-7 text-xs"
@@ -311,6 +333,21 @@ export function TemplateDesigner({
                     </Button>
                   )}
                 </div>
+
+                {backgroundImage && (
+                  <div className="flex items-center gap-3 ml-4 bg-white px-3 py-1.5 rounded-md border shadow-sm">
+                    <Label className="text-xs font-medium text-slate-500">Opacity:</Label>
+                    <Slider
+                      min={0}
+                      max={100}
+                      step={1}
+                      value={[backgroundOpacity]}
+                      onValueChange={(val: number[]) => onBackgroundOpacityChange?.(val[0])}
+                      className="w-24"
+                    />
+                    <span className="text-[10px] text-slate-500 min-w-[30px]">{backgroundOpacity}%</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -325,13 +362,23 @@ export function TemplateDesigner({
                 height: height * scale,
                 transformOrigin: "center top",
                 border: "2px solid #cbd5e1",
-                backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat"
               }}
               onClick={() => setSelectedId(null)}
             >
+              {/* Background Image Layer */}
+              {backgroundImage && (
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    opacity: backgroundOpacity / 100
+                  }}
+                />
+              )}
+
               {elements.map((el) => (
                 <Rnd
                   key={el.id}
@@ -369,6 +416,7 @@ export function TemplateDesigner({
                       justifyContent: el.textAlign === "center" ? "center" : el.textAlign === "right" ? "flex-end" : "flex-start",
                       fontWeight: el.fontWeight,
                       opacity: el.opacity,
+                      transform: `scale(${el.scaleX || 1}, ${el.scaleY || 1})`,
                     }}
                   >
                     {el.type === "image" ? (

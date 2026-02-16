@@ -34,6 +34,10 @@ export default function TemplateEditor() {
 
   const [elements, setElements] = useState<TemplateElement[]>([]);
   const [name, setName] = useState("");
+  const [width, setWidth] = useState(794);
+  const [height, setHeight] = useState(1123);
+  const [backgroundImage, setBackgroundImage] = useState("");
+  const [backgroundOpacity, setBackgroundOpacity] = useState(100);
   const [excelData, setExcelData] = useState<any[]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
   const [previewRowIndex, setPreviewRowIndex] = useState(0);
@@ -44,6 +48,10 @@ export default function TemplateEditor() {
       const templateElements = Array.isArray(template.elements) ? template.elements : [];
       setElements(templateElements);
       setName(template.name);
+      setWidth(template.width);
+      setHeight(template.height);
+      setBackgroundImage(template.backgroundImage || "");
+      setBackgroundOpacity(template.backgroundOpacity || 100);
     }
   }, [template]);
 
@@ -63,7 +71,11 @@ export default function TemplateEditor() {
     updateTemplate.mutate({
       id,
       name,
+      width,
+      height,
       elements,
+      backgroundImage,
+      backgroundOpacity,
     });
   };
 
@@ -171,9 +183,17 @@ export default function TemplateEditor() {
           <TemplateDesigner
             elements={excelData.length > 0 ? previewElements : elements}
             onChange={setElements}
-            width={template.width}
-            height={template.height}
+            width={width}
+            height={height}
             headers={headers}
+            backgroundImage={backgroundImage}
+            onBackgroundImageChange={setBackgroundImage}
+            backgroundOpacity={backgroundOpacity}
+            onBackgroundOpacityChange={setBackgroundOpacity}
+            onDimensionsChange={(w, h) => {
+              setWidth(w);
+              setHeight(h);
+            }}
             scale={0.8}
           />
         </TabsContent>

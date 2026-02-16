@@ -20,6 +20,8 @@ export const templates = mysqlTable("templates", {
   height: int("height").notNull().default(1123),
   orientation: text("orientation").notNull().default("landscape"), // "portrait" | "landscape"
   elements: json("elements").notNull().$type<TemplateElement[]>(), // Storing elements as JSON
+  backgroundImage: text("background_image"),
+  backgroundOpacity: int("background_opacity").default(100),
   baseThemeId: text("base_theme_id"),
   thumbnailUrl: text("thumbnail_url"),
   createdAt: datetime("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
