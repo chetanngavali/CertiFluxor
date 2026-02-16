@@ -8,6 +8,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import { LogoIcon } from "@/components/ui/logo";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Award,
@@ -61,12 +62,12 @@ export default function LandingPage() {
 
             {/* Header */}
             <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 h-16 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <div className="bg-slate-900 p-1.5 rounded-lg shadow-lg">
-                        <Award className="h-5 w-5 text-white" />
+                <Link href="/">
+                    <div className="flex items-center gap-2 cursor-pointer group">
+                        <LogoIcon className="h-8 w-8 shadow-sm group-hover:scale-105 transition-transform" />
+                        <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">CertiFluxor</span>
                     </div>
-                    <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">CertiFluxor</span>
-                </div>
+                </Link>
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
@@ -491,9 +492,7 @@ export default function LandingPage() {
                     {/* Brand Column (Span 2) */}
                     <div className="lg:col-span-2 flex flex-col items-start gap-4">
                         <div className="flex items-center gap-2">
-                            <div className="bg-blue-600 p-1.5 rounded-lg">
-                                <Award className="h-5 w-5 text-white" />
-                            </div>
+                            <LogoIcon className="h-6 w-6" />
                             <span className="text-xl font-black tracking-tighter uppercase text-white">CertiFluxor</span>
                         </div>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-sm">

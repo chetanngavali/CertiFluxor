@@ -3,6 +3,8 @@ import { Link } from "wouter";
 import { Search, ChevronRight, Book, Key, Webhook, Code, Terminal, FileText, Settings, Download, FileSpreadsheet, ShieldCheck, Code2 } from "lucide-react";
 import { useState } from "react";
 
+import { LogoIcon } from "@/components/ui/logo";
+
 export default function Documentation() {
     const [activeSection, setActiveSection] = useState("quickstart");
 
@@ -12,8 +14,12 @@ export default function Documentation() {
             <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 h-14 flex items-center">
                 <div className="container flex items-center justify-between px-4 sm:px-8">
                     <div className="flex items-center gap-8">
-                        <Link href="/" className="flex items-center gap-2 font-bold text-slate-900 text-lg tracking-tight uppercase">
-                            CertiFluxor <span className="text-slate-400 font-medium normal-case ml-1 tracking-normal">/ Docs</span>
+                        <Link href="/">
+                            <div className="flex items-center gap-2 cursor-pointer group">
+                                <LogoIcon className="h-6 w-6 shadow-sm group-hover:scale-105 transition-transform" />
+                                <span className="font-bold text-slate-900 text-lg tracking-tight uppercase">CertiFluxor</span>
+                                <span className="text-slate-400 font-medium normal-case tracking-normal">/ Docs</span>
+                            </div>
                         </Link>
                         <div className="hidden md:flex relative">
                             <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />

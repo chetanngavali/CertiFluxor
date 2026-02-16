@@ -1,11 +1,16 @@
 import { Link } from "wouter";
 
+import { LogoIcon } from "@/components/ui/logo";
+
 export default function Legal() {
     return (
         <div className="min-h-screen bg-slate-50 font-sans selection:bg-primary selection:text-white py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-slate-200">
-                <Link href="/" className="mb-8 inline-block font-bold text-slate-900 text-xl tracking-tight uppercase">
-                    CertiFluxor
+                <Link href="/">
+                    <div className="flex items-center gap-2 mb-8 cursor-pointer group w-fit">
+                        <LogoIcon className="h-8 w-8 shadow-sm group-hover:scale-105 transition-transform" />
+                        <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">CertiFluxor</span>
+                    </div>
                 </Link>
 
                 <h1 className="text-3xl font-black text-slate-900 mb-8">Terms of Service</h1>

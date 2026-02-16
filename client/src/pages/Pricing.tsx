@@ -9,6 +9,8 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { LogoIcon } from "@/components/ui/logo";
+
 export default function Pricing() {
     return (
         <div className="flex flex-col min-h-screen bg-white selection:bg-primary selection:text-white font-sans">
@@ -21,10 +23,8 @@ export default function Pricing() {
             {/* Header */}
             <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 h-16 flex items-center justify-between">
                 <Link href="/">
-                    <div className="flex items-center gap-2 cursor-pointer">
-                        <div className="bg-slate-900 p-1.5 rounded-lg shadow-lg">
-                            <Award className="h-5 w-5 text-white" />
-                        </div>
+                    <div className="flex items-center gap-2 cursor-pointer group">
+                        <LogoIcon className="h-8 w-8 shadow-sm group-hover:scale-105 transition-transform" />
                         <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">CertiFluxor</span>
                     </div>
                 </Link>
@@ -257,9 +257,7 @@ export default function Pricing() {
                     {/* Brand Column (Span 2) */}
                     <div className="lg:col-span-2 flex flex-col items-start gap-4">
                         <div className="flex items-center gap-2">
-                            <div className="bg-blue-600 p-1.5 rounded-lg">
-                                <Award className="h-5 w-5 text-white" />
-                            </div>
+                            <LogoIcon className="h-6 w-6" />
                             <span className="text-xl font-black tracking-tighter uppercase text-white">CertiFluxor</span>
                         </div>
                         <p className="text-slate-500 text-sm leading-relaxed max-w-sm">

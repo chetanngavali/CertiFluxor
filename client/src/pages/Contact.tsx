@@ -2,14 +2,19 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Mail, MessageSquare, Phone } from "lucide-react";
 
+import { LogoIcon } from "@/components/ui/logo";
+
 export default function Contact() {
     return (
         <div className="min-h-screen bg-white font-sans selection:bg-primary selection:text-white">
             {/* Header */}
             <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
                 <div className="container flex h-16 items-center justify-between px-4 sm:px-8">
-                    <Link href="/" className="flex items-center gap-2 font-bold text-slate-900 text-xl tracking-tight uppercase">
-                        CertiFluxor
+                    <Link href="/">
+                        <div className="flex items-center gap-2 cursor-pointer group">
+                            <LogoIcon className="h-8 w-8 shadow-sm group-hover:scale-105 transition-transform" />
+                            <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">CertiFluxor</span>
+                        </div>
                     </Link>
                     <nav className="flex items-center gap-6">
                         <Link href="/pricing">
