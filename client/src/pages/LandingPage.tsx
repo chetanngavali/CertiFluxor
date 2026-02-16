@@ -482,30 +482,30 @@ export default function LandingPage() {
             </main>
 
             {/* Footer */}
-            <footer className="bg-slate-950 text-slate-400 py-24 md:py-32 px-6 border-t border-slate-800 relative overflow-hidden">
+            <footer className="bg-slate-950 text-slate-400 py-12 md:py-16 px-6 border-t border-slate-800 relative overflow-hidden">
                 {/* Background Grid Pattern for Footer */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "32px 32px" }}></div>
 
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 relative z-10">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 relative z-10">
 
                     {/* Brand Column (Span 2) */}
-                    <div className="lg:col-span-2 flex flex-col items-start gap-8">
-                        <div className="flex items-center gap-3">
-                            <div className="bg-blue-600 p-2 rounded-lg">
-                                <Award className="h-6 w-6 text-white" />
+                    <div className="lg:col-span-2 flex flex-col items-start gap-4">
+                        <div className="flex items-center gap-2">
+                            <div className="bg-blue-600 p-1.5 rounded-lg">
+                                <Award className="h-5 w-5 text-white" />
                             </div>
-                            <span className="text-2xl font-black tracking-tighter uppercase text-white">CertiFluxor</span>
+                            <span className="text-xl font-black tracking-tighter uppercase text-white">CertiFluxor</span>
                         </div>
-                        <p className="text-slate-400 text-base leading-relaxed max-w-sm">
+                        <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
                             The enterprise-grade infrastructure for generating, signing, and delivering verifiable credentials at scale.
                         </p>
-                        <div className="flex items-center gap-4 mt-2">
+                        <div className="flex items-center gap-3 mt-2">
                             {[
                                 { icon: Twitter, href: "#" },
                                 { icon: Github, href: "#" },
                                 { icon: Linkedin, href: "#" }
                             ].map((Social, i) => (
-                                <a key={i} href={Social.href} className="h-10 w-10 flex items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 hover:border-slate-700 transition-all">
+                                <a key={i} href={Social.href} className="h-8 w-8 flex items-center justify-center rounded-md bg-slate-900 border border-slate-800 text-slate-500 hover:text-white hover:bg-slate-800 hover:border-slate-700 transition-all">
                                     <Social.icon className="h-4 w-4" />
                                 </a>
                             ))}
@@ -514,18 +514,18 @@ export default function LandingPage() {
 
                     {/* Links Columns */}
                     <div className="lg:col-span-1">
-                        <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-8">Platform</h4>
-                        <ul className="space-y-4">
+                        <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4">Platform</h4>
+                        <ul className="space-y-2 text-sm">
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Templates</a></li>
-                            <li><a href="#" className="hover:text-blue-400 transition-colors flex items-center gap-2">Designer <Badge className="bg-blue-500/10 text-blue-400 border-none text-[10px] px-1.5 py-0.5">BETA</Badge></a></li>
+                            <li><a href="#" className="hover:text-blue-400 transition-colors flex items-center gap-2">Designer <Badge className="bg-blue-500/10 text-blue-400 border-none text-[10px] px-1 py-0 h-4">BETA</Badge></a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Excel Engine</a></li>
                             <li><a href="#" className="hover:text-blue-400 transition-colors">Verification</a></li>
                         </ul>
                     </div>
 
                     <div className="lg:col-span-1">
-                        <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-8">Developers</h4>
-                        <ul className="space-y-4">
+                        <h4 className="font-bold text-white text-xs uppercase tracking-wider mb-4">Developers</h4>
+                        <ul className="space-y-2 text-sm">
                             <li><a href="/docs" className="hover:text-blue-400 transition-colors">API Reference</a></li>
                             <li><a href="/docs" className="hover:text-blue-400 transition-colors">Webhooks</a></li>
                             <li><a href="/docs" className="hover:text-blue-400 transition-colors">Status</a></li>
@@ -534,27 +534,27 @@ export default function LandingPage() {
                     </div>
 
                     {/* Newsletter / CTA Column (Span 2) */}
-                    <div className="lg:col-span-2 bg-slate-900/50 rounded-2xl p-8 border border-slate-800">
-                        <h4 className="font-bold text-white text-lg mb-4">Stay updated</h4>
-                        <p className="text-sm mb-6 text-slate-400">Subscribe to our developer newsletter for API updates and changelogs.</p>
+                    <div className="lg:col-span-2 bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                        <h4 className="font-bold text-white text-sm mb-2">Stay updated</h4>
+                        <p className="text-xs mb-4 text-slate-500">Subscribe for API updates and changelogs.</p>
                         <div className="flex gap-2">
                             <input
                                 type="email"
-                                placeholder="Enter your email"
-                                className="bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 placeholder:text-slate-600"
+                                placeholder="Enter email"
+                                className="bg-slate-950 border border-slate-800 rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 placeholder:text-slate-600 h-9"
                             />
-                            <Button className="bg-white text-slate-950 hover:bg-slate-200 font-bold">Subscribe</Button>
+                            <Button size="sm" className="bg-white text-slate-950 hover:bg-slate-200 font-bold h-9 px-4">Subscribe</Button>
                         </div>
                     </div>
                 </div>
 
-                <div className="max-w-7xl mx-auto pt-16 mt-16 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-                    <p className="text-xs text-slate-500 font-medium">
+                <div className="max-w-7xl mx-auto pt-8 mt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                    <p className="text-[10px] text-slate-600 font-medium">
                         © 2026 CertiFluxor Inc. All rights reserved.
                     </p>
-                    <div className="flex items-center gap-8 text-xs font-medium text-slate-500">
-                        <a href="/terms" className="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
+                    <div className="flex items-center gap-6 text-[10px] font-medium text-slate-600">
+                        <a href="/terms" className="hover:text-white transition-colors">Privacy</a>
+                        <a href="/terms" className="hover:text-white transition-colors">Terms</a>
                         <a href="#" className="hover:text-white transition-colors">Cookies</a>
                     </div>
                 </div>
