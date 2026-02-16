@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,7 +8,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
     Award,
     ShieldCheck,
@@ -18,7 +19,11 @@ import {
     FileSpreadsheet,
     Cpu,
     Menu,
-    X
+    X,
+    Code2,
+    Lock,
+    Globe,
+    Activity
 } from "lucide-react";
 
 const fadeInUp = {
@@ -36,31 +41,40 @@ const staggerContainer = {
 };
 
 export default function LandingPage() {
+    const [demoMode, setDemoMode] = useState<"visual" | "code">("visual");
+
     return (
-        <div className="flex flex-col min-h-screen bg-background selection:bg-primary selection:text-white">
+        <div className="flex flex-col min-h-screen bg-white selection:bg-primary selection:text-white font-sans">
+            {/* Background Grid Pattern */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary/20 opacity-20 blur-[100px]"></div>
+            </div>
+
             {/* Header */}
-            <header className="fixed top-0 w-full z-50 glass-panel border-b border-border/40 px-4 md:px-10 h-16 flex items-center justify-between">
+            <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 md:px-10 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <div className="bg-primary p-1.5 rounded-lg shadow-lg shadow-primary/20">
+                    <div className="bg-slate-900 p-1.5 rounded-lg shadow-lg">
                         <Award className="h-5 w-5 text-white" />
                     </div>
-                    <span className="text-xl font-black tracking-tighter text-foreground uppercase">FluxCert</span>
+                    <span className="text-xl font-bold tracking-tight text-slate-900 uppercase">FluxCert</span>
                 </div>
 
                 {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-10">
-                    <a href="#features" className="text-sm font-bold text-slate-600 hover:text-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-2 py-1">Platform</a>
-                    <a href="#api" className="text-sm font-bold text-slate-600 hover:text-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-2 py-1">API Docs</a>
-                    <a href="#integrations" className="text-sm font-bold text-slate-600 hover:text-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md px-2 py-1">Integrations</a>
+                <nav className="hidden md:flex items-center gap-8">
+                    <a href="#features" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Platform</a>
+                    <a href="#solutions" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Solutions</a>
+                    <a href="#developers" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Developers</a>
+                    <a href="#pricing" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Pricing</a>
                 </nav>
 
                 <div className="flex items-center gap-4">
-                    <div className="hidden md:flex items-center gap-4">
+                    <div className="hidden md:flex items-center gap-3">
                         <Link href="/auth?mode=login">
-                            <Button variant="ghost" className="text-sm font-bold hover:bg-slate-100 transition-colors px-6">Login</Button>
+                            <Button variant="ghost" className="text-sm font-medium hover:bg-slate-100 text-slate-700">Sign in</Button>
                         </Link>
                         <Link href="/auth?mode=register">
-                            <Button className="text-sm font-bold shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] transition-all px-6">Get Started</Button>
+                            <Button className="text-sm font-bold shadow-lg shadow-slate-900/20 bg-slate-900 hover:bg-slate-800 text-white transition-all px-5 rounded-lg">Get Started</Button>
                         </Link>
                     </div>
 
@@ -68,23 +82,26 @@ export default function LandingPage() {
                     <div className="md:hidden">
                         <Sheet>
                             <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon" className="hover:bg-slate-100 rounded-xl" aria-label="Open Menu">
-                                    <Menu className="h-6 w-6" />
+                                <Button variant="ghost" size="icon" className="hover:bg-slate-100 rounded-lg" aria-label="Open Menu">
+                                    <Menu className="h-6 w-6 text-slate-700" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="right" className="w-full sm:w-[400px] p-10 flex flex-col pt-20">
+                            <SheetContent side="right" className="w-full sm:w-[400px] p-6 flex flex-col pt-16 bg-white">
                                 <nav className="flex flex-col gap-6 items-start">
-                                    <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Navigation</h4>
-                                    <a href="#features" className="text-3xl font-black tracking-tighter hover:text-primary transition-colors">Platform</a>
-                                    <a href="#api" className="text-3xl font-black tracking-tighter hover:text-primary transition-colors">API Docs</a>
-                                    <a href="#integrations" className="text-3xl font-black tracking-tighter hover:text-primary transition-colors">Integrations</a>
-                                    <div className="h-px w-full bg-slate-100 my-4" />
-                                    <Link href="/auth?mode=login" className="w-full">
-                                        <Button variant="outline" className="w-full h-14 rounded-2xl text-lg font-bold">Login</Button>
-                                    </Link>
-                                    <Link href="/auth?mode=register" className="w-full">
-                                        <Button className="w-full h-14 rounded-2xl text-lg font-bold shadow-lg shadow-primary/20">Get Started</Button>
-                                    </Link>
+                                    <div className="flex flex-col gap-4 w-full">
+                                        <a href="#features" className="text-2xl font-bold text-slate-900 tracking-tight">Platform</a>
+                                        <a href="#solutions" className="text-2xl font-bold text-slate-900 tracking-tight">Solutions</a>
+                                        <a href="#developers" className="text-2xl font-bold text-slate-900 tracking-tight">Developers</a>
+                                    </div>
+                                    <div className="h-px w-full bg-slate-100 my-2" />
+                                    <div className="flex flex-col gap-3 w-full">
+                                        <Link href="/auth?mode=login" className="w-full">
+                                            <Button variant="outline" className="w-full h-12 rounded-lg text-base font-semibold border-slate-200">Sign in</Button>
+                                        </Link>
+                                        <Link href="/auth?mode=register" className="w-full">
+                                            <Button className="w-full h-12 rounded-lg text-base font-bold bg-slate-900 text-white hover:bg-slate-800">Get Started</Button>
+                                        </Link>
+                                    </div>
                                 </nav>
                             </SheetContent>
                         </Sheet>
@@ -92,113 +109,194 @@ export default function LandingPage() {
                 </div>
             </header>
 
-            <main className="flex-grow pt-16">
+            <main className="flex-grow pt-20 relative z-10">
                 {/* Hero Section */}
-                <section className="relative overflow-hidden py-16 md:py-32 px-6">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden pointer-events-none">
-                        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
-                        <div className="absolute bottom-[10%] right-[-10%] w-[30%] h-[30%] bg-primary/20 rounded-full blur-[100px]" />
-                    </div>
-
+                <section className="relative py-20 md:py-32 px-6">
                     <div className="max-w-7xl mx-auto text-center">
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
+                            className="flex justify-center"
                         >
-                            <Badge variant="outline" className="mb-8 px-5 py-2 border-primary/30 bg-primary/5 text-primary rounded-full font-bold shadow-sm">
-                                <Zap className="h-4 w-4 mr-2 fill-primary" />
-                                Excel-to-Certificate Automation API
-                            </Badge>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-8">
+                                <span className="flex h-2 w-2 rounded-full bg-blue-600"></span>
+                                New: SOC2 Type II Certified
+                                <ArrowRight className="h-3 w-3 ml-1" />
+                            </div>
                         </motion.div>
 
                         <motion.h1
-                            className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tighter mb-8 text-balance leading-[0.95] text-slate-900"
+                            className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 text-slate-900 leading-[0.95]"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.1 }}
                         >
-                            Automate Your <span className="text-primary italic">Credential</span> Issuance at Scale
+                            The Standard for <br className="hidden md:block" />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital Credentials</span>
                         </motion.h1>
 
                         <motion.p
-                            className="text-lg md:text-2xl text-slate-600 mb-12 max-w-3xl mx-auto text-balance font-medium leading-relaxed"
+                            className="text-lg md:text-2xl text-slate-600 mb-10 max-w-2xl mx-auto font-medium leading-relaxed"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.2 }}
                         >
-                            Transform Excel/CSV records into production-ready certificates. Deploy via REST API or our visual designer in minutes.
+                            Automate certificate issuance with our production-ready API and visual designer. Built for ambitious education and enterprise teams.
                         </motion.p>
 
                         <motion.div
-                            className="flex flex-col items-center gap-6"
+                            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.3 }}
                         >
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-                                <Link href="/auth?mode=register" className="w-full sm:w-auto">
-                                    <Button size="lg" className="h-16 px-12 text-xl font-bold rounded-2xl group shadow-2xl shadow-primary/30 hover:scale-[1.03] active:scale-[0.97] transition-all w-full sm:w-auto">
-                                        Open Designer Studio
-                                        <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-2" />
-                                    </Button>
-                                </Link>
-                                <Button size="lg" variant="outline" className="h-16 px-12 text-xl font-bold rounded-2xl bg-white/60 backdrop-blur-sm border-2 hover:bg-slate-50 active:scale-[0.97] transition-all w-full sm:w-auto">
-                                    View API Docs
+                            <Link href="/auth?mode=register">
+                                <Button size="lg" className="h-14 px-8 text-lg font-bold rounded-xl bg-slate-900 text-white hover:bg-slate-800 hover:scale-105 transition-all shadow-xl shadow-slate-900/20">
+                                    Start Building
+                                    <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
-                            </div>
-                            <p className="text-xs font-bold text-slate-500 tracking-widest uppercase">
-                                Free for developers • No credit card required
-                            </p>
+                            </Link>
+                            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold rounded-xl border-slate-200 hover:bg-slate-50 text-slate-700 transition-all">
+                                Read Documentation
+                            </Button>
                         </motion.div>
 
-                        {/* Mockup Preview */}
+                        {/* Interactive Preview */}
                         <motion.div
-                            className="mt-24 relative px-2"
+                            className="relative max-w-5xl mx-auto"
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 1, delay: 0.4 }}
                         >
-                            <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-slate-50 to-transparent -z-20" />
-                            <div className="glass-panel rounded-[2rem] p-3 md:p-5 border-white/40 shadow-3xl overflow-hidden aspect-[16/10] md:aspect-[16/9] max-w-5xl mx-auto ring-1 ring-slate-200/50">
-                                <div className="bg-slate-900 w-full h-full rounded-[1.5rem] flex items-center justify-center relative overflow-hidden">
-                                    <div className="absolute top-4 left-6 hidden sm:flex gap-1.5 z-20">
-                                        <div className="w-3 h-3 rounded-full bg-red-500/90 shadow-sm" />
-                                        <div className="w-3 h-3 rounded-full bg-yellow-500/90 shadow-sm" />
-                                        <div className="w-3 h-3 rounded-full bg-green-500/90 shadow-sm" />
-                                    </div>
-                                    <div className="absolute top-4 inset-x-0 text-center text-white/10 font-black text-4xl sm:text-7xl uppercase tracking-[0.2em] select-none pointer-events-none">Visual Editor</div>
+                            {/* Toggle Switch */}
+                            <div className="flex justify-center mb-8">
+                                <div className="p-1.5 bg-slate-100/80 backdrop-blur-sm rounded-xl inline-flex shadow-inner border border-slate-200/50">
+                                    <button
+                                        onClick={() => setDemoMode("visual")}
+                                        className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${demoMode === "visual" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                                    >
+                                        <Layers className="h-4 w-4" />
+                                        Visual Designer
+                                    </button>
+                                    <button
+                                        onClick={() => setDemoMode("code")}
+                                        className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all ${demoMode === "code" ? "bg-slate-900 text-white shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+                                    >
+                                        <Code2 className="h-4 w-4" />
+                                        API Payload
+                                    </button>
+                                </div>
+                            </div>
 
-                                    <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-16">
-                                        <div className="w-full max-w-3xl aspect-[1.414/1] bg-white rounded-lg shadow-2xl flex flex-col items-center justify-center p-4 sm:p-12 border-[8px] sm:border-[12px] border-white ring-1 ring-slate-100 group hover:border-primary/5 transition-all duration-700 scale-[0.85] sm:scale-100 origin-center">
-                                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_center,#000_1px,transparent_1px)] bg-[size:20px_20px]" />
-                                            <Award className="h-8 w-8 sm:h-14 sm:w-14 text-primary mb-4 sm:mb-8 opacity-90" />
-                                            <h3 className="text-[10px] sm:text-xl font-black text-slate-800 uppercase tracking-[0.3em] mb-1 sm:mb-4 text-center">Certificate of Excellence</h3>
-                                            <div className="w-12 sm:w-20 h-0.5 sm:h-1 bg-primary mb-4 sm:mb-10 rounded-full" />
-                                            <p className="text-slate-400 italic mb-1 sm:mb-3 text-[8px] sm:text-xs uppercase font-bold tracking-[0.2em]">This is to certify that</p>
-                                            <p className="text-xl sm:text-4xl font-serif text-slate-900 mb-4 sm:mb-12 border-b sm:border-b-2 border-slate-100 pb-1 sm:pb-3 px-8 sm:px-16 text-center">
-                                                {"{{Name}}"}
-                                            </p>
-                                            <p className="text-slate-500 text-[8px] sm:text-sm max-w-[200px] sm:max-w-md text-center font-bold leading-relaxed">
-                                                has successfully completed the <span className="text-slate-800 font-black">{"{{Course}}"}</span> course on <span className="text-slate-900 font-black">{"{{Date}}"}</span>.
-                                            </p>
-                                        </div>
+                            <div className="relative rounded-[2rem] border border-slate-200/60 bg-white shadow-2xl shadow-slate-200/50 overflow-hidden ring-1 ring-slate-900/5">
+                                <div className="bg-slate-50/50 w-full h-[500px] md:h-[600px] flex items-center justify-center relative overflow-hidden">
+                                    {/* Simple Window Controls */}
+                                    <div className="absolute top-0 left-0 right-0 h-10 bg-white border-b border-slate-100 flex items-center px-4 gap-2 z-20">
+                                        <div className="w-3 h-3 rounded-full bg-slate-200" />
+                                        <div className="w-3 h-3 rounded-full bg-slate-200" />
+                                        <div className="w-3 h-3 rounded-full bg-slate-200" />
                                     </div>
+
+                                    <AnimatePresence mode="wait">
+                                        {demoMode === "visual" ? (
+                                            <motion.div
+                                                key="visual"
+                                                initial={{ opacity: 0, width: "95%" }}
+                                                animate={{ opacity: 1, width: "100%" }}
+                                                exit={{ opacity: 0, width: "95%" }}
+                                                transition={{ duration: 0.4 }}
+                                                className="w-full flex justify-center items-center p-8 pt-16"
+                                            >
+                                                <div className="w-full max-w-3xl aspect-[1.414/1] bg-white rounded-sm shadow-xl flex flex-col items-center justify-center p-12 border border-slate-200 relative">
+                                                    <Award className="h-16 w-16 text-blue-600 mb-6" />
+                                                    <h3 className="text-2xl font-serif text-slate-900 mb-2 font-bold tracking-tight">CERTIFICATE OF COMPLETION</h3>
+                                                    <div className="w-16 h-1 bg-blue-600 mb-8" />
+                                                    <p className="text-slate-500 text-sm uppercase tracking-widest font-medium mb-4">Presented to</p>
+                                                    <p className="text-4xl font-serif text-slate-900 mb-8 italic">
+                                                        Emily Johnson
+                                                    </p>
+                                                    <p className="text-slate-600 max-w-md text-center">
+                                                        For successfully demonstrating mastery in <span className="text-slate-900 font-bold">Advanced Systems Architecture</span>.
+                                                    </p>
+                                                    <div className="absolute bottom-12 right-12 w-24 h-24 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center">
+                                                        <Cpu className="h-10 w-10 text-slate-300" />
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ) : (
+                                            <motion.div
+                                                key="code"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.4 }}
+                                                className="w-full max-w-3xl h-[400px] bg-[#0d1117] rounded-xl shadow-2xl border border-slate-800 p-6 flex flex-col font-mono text-xs sm:text-sm text-left overflow-hidden relative"
+                                            >
+                                                <div className="flex border-b border-slate-800 pb-4 mb-4 gap-4 text-slate-400">
+                                                    <span className="text-blue-400 font-bold">POST</span> /v1/certificates/issue
+                                                </div>
+                                                <pre className="text-slate-300 overflow-visible">
+                                                    <code>{`{
+  "template_id": "tpl_8x92m4k2",
+  "recipient": {
+    "name": "Emily Johnson",
+    "email": "emily@example.com",
+    "metadata": {
+      "course": "Advanced Systems Architecture",
+      "grade": "A+",
+      "issue_date": "2024-03-15"
+    }
+  },
+  "options": {
+    "format": "pdf",
+    "delivery": "email_instant"
+  }
+}`}</code>
+                                                </pre>
+                                                <div className="absolute bottom-0 left-0 right-0 bg-[#0d1117]/90 backdrop-blur-sm p-4 border-t border-slate-800 flex justify-between items-center text-green-400">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                                        200 OK
+                                                    </div>
+                                                    <span className="text-slate-500">45ms</span>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             </div>
                         </motion.div>
                     </div>
                 </section>
 
+                {/* Metrics / Trust Section */}
+                <section className="py-20 border-y border-slate-100 bg-slate-50/50">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left items-center">
+                            <div className="col-span-2 md:col-span-1">
+                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Trusted by</p>
+                                <p className="text-2xl font-black text-slate-900 tracking-tight">500+ Teams</p>
+                            </div>
+                            <div className="col-span-2 md:col-span-3 flex flex-wrap gap-8 md:gap-16 items-center justify-center md:justify-end opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                                <div className="text-xl font-black text-slate-800 flex items-center gap-2 rotate-0 hover:scale-110 transition-transform cursor-default"><Globe className="h-6 w-6" /> GlobalEdu</div>
+                                <div className="text-xl font-black text-slate-800 flex items-center gap-2 rotate-0 hover:scale-110 transition-transform cursor-default"><Layers className="h-6 w-6" /> StackBuild</div>
+                                <div className="text-xl font-black text-slate-800 flex items-center gap-2 rotate-0 hover:scale-110 transition-transform cursor-default"><Cpu className="h-6 w-6" /> TechFlow</div>
+                                <div className="text-xl font-black text-slate-800 flex items-center gap-2 rotate-0 hover:scale-110 transition-transform cursor-default"><Zap className="h-6 w-6" /> FastCert</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Features Grid */}
-                <section id="features" className="py-24 md:py-32 px-6 bg-slate-50/50 border-y border-border/40 scroll-mt-16">
+                <section id="features" className="py-24 px-6 relative">
                     <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-20">
-                            <h2 className="text-3xl sm:text-5xl font-black tracking-tighter mb-6 text-slate-900 uppercase">Built for <span className="text-primary italic underline decoration-primary/20 underline-offset-8">Enterprise</span> Flow</h2>
-                            <p className="text-slate-600 text-lg md:text-xl max-w-3xl mx-auto font-medium">Production-ready infrastructure designed to bridge the gap between static data and professional credentials.</p>
+                        <div className="text-center mb-20 max-w-2xl mx-auto">
+                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6 text-slate-900">Infrastructure for the Modern Credential</h2>
+                            <p className="text-slate-600 text-lg">We handle the complexity of rendering, signing, and delivering certificates so you can focus on education.</p>
                         </div>
                         <motion.div
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
+                            className="grid grid-cols-1 md:grid-cols-3 gap-8"
                             variants={staggerContainer}
                             initial="initial"
                             whileInView="animate"
@@ -207,36 +305,43 @@ export default function LandingPage() {
                             {[
                                 {
                                     icon: <FileSpreadsheet className="h-6 w-6" />,
-                                    title: "Smart Excel Ingestion",
-                                    label: "Administrator",
-                                    desc: "Intelligent auto-header detection and dynamic field mapping. Upload your CSV and start issuing instantly within seconds."
+                                    title: "Bulk CSV Ingestion",
+                                    desc: "Upload 1,000+ records and detect columns automatically. Our engine maps headers to template variables instantly."
                                 },
                                 {
                                     icon: <Layers className="h-6 w-6" />,
-                                    title: "Visual Template Studio",
-                                    label: "Designer",
-                                    desc: "Robust drag-and-drop editor with dynamic text bindings, multi-layer support, and automated QR security signatures."
+                                    title: "Pixel-Perfect Renderer",
+                                    desc: "Our PDF engine ensures vectors are sharp and fonts are embedded correctly. No more blurry certificate exports."
                                 },
                                 {
-                                    icon: <Cpu className="h-6 w-6" />,
-                                    title: "API & LMS Integrations",
-                                    label: "Developer",
-                                    desc: "Fast REST API with granular keys and webhooks. Connect FluxCert to your LMS, CRM, or custom application in minutes."
+                                    icon: <Code2 className="h-6 w-6" />,
+                                    title: "Developer API",
+                                    desc: "A clean REST API that fits into your CI/CD or LMS workflow. Webhooks notify you on successful delivery."
+                                },
+                                {
+                                    icon: <ShieldCheck className="h-6 w-6" />,
+                                    title: "Verifiable Security",
+                                    desc: "Each certificate gets a unique, tamper-proof ID and QR code hosted on a permanent verification URL."
+                                },
+                                {
+                                    icon: <Globe className="h-6 w-6" />,
+                                    title: "Custom Domains",
+                                    desc: "Serve certificates from credentials.yourdomain.com. Fully white-labeled experience for your brand."
+                                },
+                                {
+                                    icon: <Activity className="h-6 w-6" />,
+                                    title: "Analytics Dashboard",
+                                    desc: "Track open rates, share rates, and LinkedIn adds. Understand the impact of your credential program."
                                 }
                             ].map((f, i) => (
                                 <motion.div key={i} variants={fadeInUp}>
-                                    <Card className="rounded-[2.5rem] border border-border/60 shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 overflow-hidden group hover:-translate-y-2 h-full bg-white flex flex-col">
-                                        <CardContent className="p-10 md:p-12 flex flex-col h-full">
-                                            <Badge variant="secondary" className="w-fit mb-8 px-4 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-primary bg-primary/5 border-primary/10 transition-colors group-hover:bg-primary group-hover:text-white">
-                                                {f.label}
-                                            </Badge>
-                                            <div className="bg-primary/5 w-16 h-16 rounded-[1.25rem] flex items-center justify-center mb-8 text-primary transition-all group-hover:scale-110 group-hover:bg-primary group-hover:text-white shadow-sm">
-                                                {f.icon}
-                                            </div>
-                                            <h3 className="text-2xl font-black mb-4 tracking-tighter text-slate-900 uppercase leading-none">{f.title}</h3>
-                                            <p className="text-slate-600 leading-relaxed font-semibold text-lg">{f.desc}</p>
-                                        </CardContent>
-                                    </Card>
+                                    <div className="group p-8 rounded-2xl border border-slate-200 bg-white hover:border-blue-600/30 hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-300">
+                                        <div className="bg-slate-50 w-12 h-12 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                            {f.icon}
+                                        </div>
+                                        <h3 className="text-xl font-bold mb-3 text-slate-900">{f.title}</h3>
+                                        <p className="text-slate-500 leading-relaxed text-sm font-medium">{f.desc}</p>
+                                    </div>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -244,49 +349,28 @@ export default function LandingPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="py-24 md:py-32 px-4 sm:px-10 relative overflow-hidden backdrop-blur-3xl">
-                    <motion.div
-                        className="max-w-6xl mx-auto bg-slate-950 rounded-[3rem] md:rounded-[4rem] p-10 md:p-24 text-center relative border border-white/10 shadow-3xl overflow-hidden"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                    >
-                        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -mr-64 -mt-64 pointer-events-none" />
-                        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -ml-64 -mb-64 pointer-events-none" />
+                <section className="py-20 px-4">
+                    <div className="max-w-5xl mx-auto bg-slate-900 rounded-[2.5rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+                        {/* Abstract Shapes */}
+                        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+                        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/20 rounded-full blur-[100px] -ml-32 -mb-32 pointer-events-none" />
 
                         <div className="relative z-10 flex flex-col items-center">
-                            <Badge variant="outline" className="mb-8 border-white/20 text-white/80 px-5 py-1.5 bg-white/5 rounded-full backdrop-blur-md uppercase tracking-[0.3em] text-[10px] font-black">
-                                Production Ready
-                            </Badge>
-                            <h2 className="text-4xl md:text-7xl font-black text-white mb-8 tracking-[0.02em] leading-[0.9] uppercase">Ready to automate your <span className="text-primary italic">graduates</span>?</h2>
-                            <p className="text-slate-400 text-lg md:text-2xl mb-12 max-w-2xl mx-auto font-bold leading-relaxed">Join 500+ institutions issuing 10k+ professional certificates per month.</p>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">Ready to scale your certification?</h2>
+                            <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto">Join the platform powering the next generation of digital credentials. 99.99% uptime SLA available.</p>
 
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full sm:w-auto">
-                                <Link href="/auth?mode=register" className="w-full sm:w-auto">
-                                    <Button size="lg" className="h-18 px-14 text-2xl font-black rounded-2xl shadow-2xl shadow-primary/40 transition-all hover:scale-[1.05] active:scale-[0.95] w-full bg-primary hover:bg-primary/90 text-white uppercase tracking-tighter">
-                                        Start Free Now
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                                <Link href="/auth?mode=register">
+                                    <Button className="h-14 px-8 text-lg font-bold rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-all w-full sm:w-auto">
+                                        Start for Free
                                     </Button>
                                 </Link>
-                                <Button size="lg" variant="outline" className="h-18 px-14 text-2xl font-black rounded-2xl text-white border-white/10 hover:bg-white/5 active:scale-[0.95] transition-all w-full sm:w-auto uppercase tracking-tighter">
-                                    Talk to Sales
+                                <Button variant="outline" className="h-14 px-8 text-lg font-bold rounded-xl text-white border-white/10 hover:bg-white/10 hover:text-white transition-all w-full sm:w-auto bg-transparent">
+                                    Contact Sales
                                 </Button>
                             </div>
-
-                            <div className="mt-24 border-t border-white/10 pt-16 w-full">
-                                <p className="text-white/40 text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-12">Trusted Infrastructure Partner</p>
-                                <div className="flex flex-wrap items-center justify-center gap-x-12 sm:gap-x-20 gap-y-10">
-                                    {["UNIVERSITY", "BOOTCAMP.IO", "LMSFLOW", "TECHCORP"].map((brand, idx) => (
-                                        <div key={idx} className="text-white/30 hover:text-white/90 transition-all duration-500 font-black text-xl sm:text-3xl tracking-tighter cursor-default group uppercase">
-                                            {brand.split('.').map((part, pIdx) => (
-                                                <span key={pIdx} className={pIdx === 0 ? "group-hover:text-primary transition-colors" : ""}>{part}</span>
-                                            ))}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </section>
             </main>
 
