@@ -31,7 +31,7 @@ export interface IStorage {
   getApiKeys(): Promise<ApiKey[]>;
   getApiKey(key: string): Promise<ApiKey | undefined>;
   createApiKey(apiKey: InsertApiKey): Promise<ApiKey>;
-  
+
   // History/Generations
   createGeneration(gen: any): Promise<Generation>;
   getGenerations(): Promise<Generation[]>;
@@ -50,7 +50,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(user: any): Promise<User> {
-    const [newUser] = await db.insert(users).values(user).returning();
+    const [result] = await db.insert(users).values(user);
+    const [newUser] = await db.select().from(users).where(eq(users.id, result.insertId));
     return newUser;
   }
 
@@ -65,15 +66,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createTemplate(template: InsertTemplate): Promise<Template> {
-    const [newTemplate] = await db.insert(templates).values(template).returning();
+    await db.insert(templates).values(template);
+    const [newTemplate] = await db.select().from(templates).where(eq(templates.id, template.id));
     return newTemplate;
   }
 
   async updateTemplate(id: string, updates: Partial<InsertTemplate>): Promise<Template> {
-    const [updated] = await db.update(templates)
+    await db.update(templates)
       .set({ ...updates, updatedAt: new Date() })
-      .where(eq(templates.id, id))
-      .returning();
+      .where(eq(templates.id, id));
+
+    const [updated] = await db.select().from(templates).where(eq(templates.id, id));
     return updated;
   }
 
@@ -92,13 +95,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createApiKey(apiKey: InsertApiKey): Promise<ApiKey> {
-    const [newKey] = await db.insert(apiKeys).values(apiKey).returning();
+    const [result] = await db.insert(apiKeys).values(apiKey);
+    const [newKey] = await db.select().from(apiKeys).where(eq(apiKeys.id, result.insertId));
     return newKey;
   }
 
   // Generations
   async createGeneration(gen: any): Promise<Generation> {
-    const [newGen] = await db.insert(generations).values(gen).returning();
+    const [result] = await db.insert(generations).values(gen);
+    const [newGen] = await db.select().from(generations).where(eq(generations.id, result.insertId));
     return newGen;
   }
 

@@ -1,17 +1,9 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { 
-  LayoutDashboard, 
-  FileEdit, 
-  Key, 
-  History, 
-  Settings,
-  Award,
-  LogOut
-} from "lucide-react";
+import { Award, LayoutDashboard, FileEdit, Key, History, Settings, LogOut } from "lucide-react";
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Templates', href: '/templates', icon: FileEdit },
   { name: 'API Keys', href: '/api-keys', icon: Key },
   { name: 'History', href: '/history', icon: History },
@@ -23,15 +15,15 @@ export function Sidebar() {
   return (
     <div className="hidden lg:flex h-screen w-64 flex-col fixed inset-y-0 z-50 bg-slate-900 text-white border-r border-slate-800">
       <div className="flex h-16 shrink-0 items-center px-6 border-b border-slate-800 bg-slate-950">
-        <Award className="h-8 w-8 text-indigo-500 mr-2" />
-        <span className="font-display font-bold text-xl tracking-tight">CertifyOS</span>
+        <Award className="h-6 w-6 text-primary mr-2" />
+        <span className="font-display font-black text-xl tracking-tighter uppercase text-white">FluxCert</span>
       </div>
 
       <nav className="flex-1 flex flex-col gap-1 p-4">
         <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-2">
           Menu
         </div>
-        
+
         {navigation.map((item) => {
           const isActive = location === item.href;
           return (
@@ -64,7 +56,7 @@ export function Sidebar() {
           </div>
           <div className="flex flex-col">
             <span className="text-white text-sm font-medium">Admin User</span>
-            <span className="text-xs text-slate-500">admin@certifyos.com</span>
+            <span className="text-xs text-slate-500">admin@fluxcert.io</span>
           </div>
           <LogOut className="ml-auto h-4 w-4" />
         </div>

@@ -1,12 +1,13 @@
+// Forced IDE refresh 
 import React, { useState, useRef } from "react";
 import { Rnd } from "react-rnd";
 import { TemplateElement } from "@shared/schema";
 import { cn } from "@/lib/utils";
-import { 
-  Type, 
-  Image as ImageIcon, 
-  Square, 
-  Trash2, 
+import {
+  Type,
+  Image as ImageIcon,
+  Square,
+  Trash2,
   Move,
   AlignLeft,
   AlignCenter,
@@ -30,11 +31,11 @@ interface TemplateDesignerProps {
   headers: string[]; // For dynamic binding
 }
 
-export function TemplateDesigner({ 
-  elements, 
-  onChange, 
-  width, 
-  height, 
+export function TemplateDesigner({
+  elements,
+  onChange,
+  width,
+  height,
   scale = 1,
   headers = []
 }: TemplateDesignerProps) {
@@ -83,11 +84,11 @@ export function TemplateDesigner({
 
       {/* Canvas Area */}
       <div className="flex-1 bg-slate-100/50 overflow-auto p-8 flex items-center justify-center relative">
-        <div 
+        <div
           ref={containerRef}
           className="bg-white shadow-2xl relative transition-all"
-          style={{ 
-            width: width * scale, 
+          style={{
+            width: width * scale,
             height: height * scale,
             transformOrigin: "center top"
           }}
@@ -98,8 +99,8 @@ export function TemplateDesigner({
               key={el.id}
               size={{ width: el.width * scale, height: el.height * scale }}
               position={{ x: el.x * scale, y: el.y * scale }}
-              onDragStop={(_, d) => handleUpdateElement(el.id, { x: d.x / scale, y: d.y / scale })}
-              onResizeStop={(_, __, ref, ___, position) => {
+              onDragStop={(_: any, d: any) => handleUpdateElement(el.id, { x: d.x / scale, y: d.y / scale })}
+              onResizeStop={(_: any, __: any, ref: any, ___: any, position: any) => {
                 handleUpdateElement(el.id, {
                   width: parseInt(ref.style.width) / scale,
                   height: parseInt(ref.style.height) / scale,
@@ -109,7 +110,7 @@ export function TemplateDesigner({
               }}
               bounds="parent"
               scale={scale}
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 setSelectedId(el.id);
               }}
@@ -118,7 +119,7 @@ export function TemplateDesigner({
                 selectedId === el.id && "border-indigo-600 z-10"
               )}
             >
-              <div 
+              <div
                 className="w-full h-full flex items-center overflow-hidden"
                 style={{
                   fontSize: (el.fontSize || 16) * scale,
@@ -143,10 +144,10 @@ export function TemplateDesigner({
                     {el.type === "dynamicText" && el.bindingField ? `{${el.bindingField}}` : el.text}
                   </span>
                 )}
-                
+
                 {selectedId === el.id && (
                   <div className="absolute -top-3 -right-3">
-                    <button 
+                    <button
                       className="bg-red-500 text-white p-1 rounded-full shadow-md hover:bg-red-600"
                       onClick={(e) => { e.stopPropagation(); handleDeleteElement(el.id); }}
                     >
@@ -165,7 +166,7 @@ export function TemplateDesigner({
         <div className="p-4 border-b bg-slate-50">
           <h3 className="font-semibold text-sm text-slate-900">Properties</h3>
         </div>
-        
+
         <div className="p-4 flex-1 overflow-y-auto space-y-6">
           {selectedElement ? (
             <>
@@ -174,17 +175,17 @@ export function TemplateDesigner({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>X Position</Label>
-                    <Input 
-                      type="number" 
-                      value={Math.round(selectedElement.x)} 
+                    <Input
+                      type="number"
+                      value={Math.round(selectedElement.x)}
                       onChange={(e) => handleUpdateElement(selectedElement.id, { x: Number(e.target.value) })}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>Y Position</Label>
-                    <Input 
-                      type="number" 
-                      value={Math.round(selectedElement.y)} 
+                    <Input
+                      type="number"
+                      value={Math.round(selectedElement.y)}
                       onChange={(e) => handleUpdateElement(selectedElement.id, { y: Number(e.target.value) })}
                     />
                   </div>
@@ -199,17 +200,17 @@ export function TemplateDesigner({
                   {selectedElement.type === "staticText" ? (
                     <div className="space-y-2">
                       <Label>Content</Label>
-                      <Input 
-                        value={selectedElement.text} 
+                      <Input
+                        value={selectedElement.text}
                         onChange={(e) => handleUpdateElement(selectedElement.id, { text: e.target.value })}
                       />
                     </div>
                   ) : (
                     <div className="space-y-2">
                       <Label>Dynamic Field</Label>
-                      <Select 
-                        value={selectedElement.bindingField} 
-                        onValueChange={(val) => handleUpdateElement(selectedElement.id, { bindingField: val })}
+                      <Select
+                        value={selectedElement.bindingField}
+                        onValueChange={(val: string) => handleUpdateElement(selectedElement.id, { bindingField: val })}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select field" />
@@ -230,46 +231,46 @@ export function TemplateDesigner({
 
                   <div className="space-y-2">
                     <Label>Font Size</Label>
-                    <Slider 
-                      min={8} 
-                      max={120} 
-                      step={1} 
+                    <Slider
+                      min={8}
+                      max={120}
+                      step={1}
                       value={[selectedElement.fontSize || 16]}
-                      onValueChange={(val) => handleUpdateElement(selectedElement.id, { fontSize: val[0] })}
+                      onValueChange={(val: number[]) => handleUpdateElement(selectedElement.id, { fontSize: val[0] })}
                     />
                     <div className="text-right text-xs text-muted-foreground">{selectedElement.fontSize}px</div>
                   </div>
 
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex border rounded-md overflow-hidden">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         className={cn("h-8 px-2 rounded-none", selectedElement.textAlign === "left" && "bg-slate-100")}
                         onClick={() => handleUpdateElement(selectedElement.id, { textAlign: "left" })}
                       >
                         <AlignLeft className="w-4 h-4" />
                       </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         className={cn("h-8 px-2 rounded-none", selectedElement.textAlign === "center" && "bg-slate-100")}
                         onClick={() => handleUpdateElement(selectedElement.id, { textAlign: "center" })}
                       >
                         <AlignCenter className="w-4 h-4" />
                       </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         className={cn("h-8 px-2 rounded-none", selectedElement.textAlign === "right" && "bg-slate-100")}
                         onClick={() => handleUpdateElement(selectedElement.id, { textAlign: "right" })}
                       >
                         <AlignRight className="w-4 h-4" />
                       </Button>
                     </div>
-                    
-                    <Button 
-                      variant="outline" 
+
+                    <Button
+                      variant="outline"
                       size="sm"
                       className={cn("h-8", selectedElement.fontWeight === "bold" && "bg-slate-100 border-slate-400")}
                       onClick={() => handleUpdateElement(selectedElement.id, { fontWeight: selectedElement.fontWeight === "bold" ? "normal" : "bold" })}
@@ -279,7 +280,7 @@ export function TemplateDesigner({
 
                     <Popover>
                       <PopoverTrigger asChild>
-                        <button 
+                        <button
                           className="w-8 h-8 rounded border shadow-sm"
                           style={{ backgroundColor: selectedElement.color }}
                         />
@@ -287,7 +288,7 @@ export function TemplateDesigner({
                       <PopoverContent className="w-64">
                         <div className="grid grid-cols-5 gap-2">
                           {["#000000", "#ffffff", "#ef4444", "#f97316", "#f59e0b", "#84cc16", "#10b981", "#06b6d4", "#3b82f6", "#6366f1", "#8b5cf6", "#d946ef", "#f43f5e", "#64748b", "#334155"].map(c => (
-                            <button 
+                            <button
                               key={c}
                               className="w-8 h-8 rounded-full border shadow-sm hover:scale-110 transition-transform"
                               style={{ backgroundColor: c }}
@@ -309,7 +310,7 @@ export function TemplateDesigner({
                     <div className="flex gap-2 items-center">
                       <Popover>
                         <PopoverTrigger asChild>
-                          <button 
+                          <button
                             className="w-full h-8 rounded border shadow-sm"
                             style={{ backgroundColor: selectedElement.backgroundColor }}
                           />
@@ -317,7 +318,7 @@ export function TemplateDesigner({
                         <PopoverContent className="w-64">
                           <div className="grid grid-cols-5 gap-2">
                             {["#000000", "#ffffff", "#ef4444", "#f97316", "#f59e0b", "#84cc16", "#10b981", "#06b6d4", "#3b82f6", "#6366f1", "#8b5cf6", "#d946ef", "#f43f5e", "#64748b", "#334155", "transparent"].map(c => (
-                              <button 
+                              <button
                                 key={c}
                                 className="w-8 h-8 rounded-full border shadow-sm hover:scale-110 transition-transform relative"
                                 style={{ backgroundColor: c === "transparent" ? undefined : c }}
@@ -339,8 +340,8 @@ export function TemplateDesigner({
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label>Image URL</Label>
-                    <Input 
-                      placeholder="https://..." 
+                    <Input
+                      placeholder="https://..."
                       value={selectedElement.src || ""}
                       onChange={(e) => handleUpdateElement(selectedElement.id, { src: e.target.value })}
                     />

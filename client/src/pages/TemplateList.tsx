@@ -2,7 +2,7 @@ import { useTemplates, useCreateTemplate, useDeleteTemplate } from "@/hooks/use-
 import { Shell } from "@/components/layout/Shell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Plus, Trash2, Edit, Copy, MoreHorizontal } from "lucide-react";
+import { Plus, Trash2, Edit, Copy, MoreHorizontal, FileEdit } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import {
   DropdownMenu,
@@ -27,7 +27,7 @@ export default function TemplateList() {
       height: 600,
       elements: [],
     }, {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         setLocation(`/templates/${data.id}`);
       }
     });
@@ -53,7 +53,7 @@ export default function TemplateList() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {templates?.map((template) => (
+          {templates?.map((template: any) => (
             <Card key={template.id} className="group overflow-hidden border-slate-200 hover:border-indigo-200 hover:shadow-lg transition-all duration-300">
               {/* Preview Area */}
               <div className="aspect-[4/3] bg-slate-100 relative overflow-hidden border-b">
@@ -64,7 +64,7 @@ export default function TemplateList() {
                     PREVIEW
                   </div>
                 )}
-                
+
                 {/* Overlay Actions */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                   <Link href={`/templates/${template.id}`}>
@@ -84,7 +84,7 @@ export default function TemplateList() {
                       Updated {format(new Date(template.updatedAt || new Date()), 'MMM d, yyyy')}
                     </p>
                   </div>
-                  
+
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -95,7 +95,7 @@ export default function TemplateList() {
                       <DropdownMenuItem onClick={() => { /* Duplicate logic */ }}>
                         <Copy className="w-4 h-4 mr-2" /> Duplicate
                       </DropdownMenuItem>
-                      <DropdownMenuItem 
+                      <DropdownMenuItem
                         className="text-red-600 focus:text-red-600 focus:bg-red-50"
                         onClick={() => deleteTemplate.mutate(template.id)}
                       >
@@ -107,7 +107,7 @@ export default function TemplateList() {
               </div>
             </Card>
           ))}
-          
+
           {/* Empty State */}
           {templates?.length === 0 && (
             <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50/50">

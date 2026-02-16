@@ -1,6 +1,7 @@
 
 import { storage } from "./storage";
 import { templates, apiKeys } from "@shared/schema";
+import path from "path";
 
 async function seed() {
   // Check if templates exist
@@ -143,3 +144,14 @@ async function seed() {
 }
 
 export default seed;
+
+if (process.argv[1] && (path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname.substring(process.platform === 'win32' ? 1 : 0)))) {
+  seed().then(() => {
+    console.log("Seeding completed successfully.");
+    process.exit(0);
+  }).catch(err => {
+    console.error("Seeding failed:", err);
+    process.exit(1);
+  });
+}
+

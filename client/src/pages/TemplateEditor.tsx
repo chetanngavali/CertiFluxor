@@ -4,6 +4,7 @@ import { useTemplate, useUpdateTemplate } from "@/hooks/use-templates";
 import { useGenerateCertificate } from "@/hooks/use-certificates";
 import { Shell } from "@/components/layout/Shell";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TemplateDesigner } from "@/components/TemplateDesigner";
@@ -25,7 +26,7 @@ export default function TemplateEditor() {
   const [, params] = useRoute("/templates/:id");
   const [, setLocation] = useLocation();
   const id = params?.id || "";
-  
+
   const { data: template, isLoading } = useTemplate(id);
   const updateTemplate = useUpdateTemplate();
   const generateCertificate = useGenerateCertificate();
@@ -86,13 +87,13 @@ export default function TemplateEditor() {
         <Button variant="ghost" size="icon" onClick={() => setLocation("/templates")}>
           <ChevronLeft className="w-5 h-5" />
         </Button>
-        
-        <Input 
-          className="text-xl font-display font-bold border-none shadow-none focus-visible:ring-0 px-0 h-auto w-auto min-w-[300px]" 
+
+        <Input
+          className="text-xl font-display font-bold border-none shadow-none focus-visible:ring-0 px-0 h-auto w-auto min-w-[300px]"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        
+
         <div className="ml-auto flex items-center gap-2">
           <Button variant="outline" onClick={handleSave} disabled={updateTemplate.isPending}>
             <Save className="w-4 h-4 mr-2" />
@@ -113,7 +114,7 @@ export default function TemplateEditor() {
                   This will generate {excelData.length} certificates based on your uploaded data.
                 </DialogDescription>
               </DialogHeader>
-              
+
               <div className="py-4">
                 {excelData.length > 0 ? (
                   <div className="p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm">
@@ -148,24 +149,24 @@ export default function TemplateEditor() {
               <Eye className="w-4 h-4" />
               <span>Preview Mode: {excelData.length > 0 ? `Row ${previewRowIndex + 1} of ${excelData.length}` : "Default"}</span>
             </div>
-            
+
             <div className="flex items-center gap-1">
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 disabled={previewRowIndex === 0}
                 onClick={() => setPreviewRowIndex(i => i - 1)}
               >Previous</Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 disabled={previewRowIndex >= excelData.length - 1}
                 onClick={() => setPreviewRowIndex(i => i + 1)}
               >Next</Button>
             </div>
           </div>
 
-          <TemplateDesigner 
+          <TemplateDesigner
             elements={excelData.length > 0 ? previewElements : elements}
             onChange={setElements}
             width={template.width}
@@ -178,7 +179,7 @@ export default function TemplateEditor() {
         <TabsContent value="data">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
-              <ExcelUploader 
+              <ExcelUploader
                 onDataParsed={(data, headers) => {
                   setExcelData(data);
                   setHeaders(headers);
@@ -190,7 +191,7 @@ export default function TemplateEditor() {
                 }}
               />
             </div>
-            
+
             <div className="lg:col-span-2">
               <Card>
                 <div className="p-4 border-b">

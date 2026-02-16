@@ -1,48 +1,49 @@
 
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { mysqlTable, text, serial, int, boolean, timestamp, datetime, json, varchar } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 
 // === TABLE DEFINITIONS ===
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
+export const users = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
+  username: varchar("username", { length: 255 }).notNull().unique(),
   role: text("role").notNull().default("user"), // "admin" | "user"
 });
 
-export const templates = pgTable("templates", {
-  id: text("id").primaryKey(), // Using text ID for friendly IDs like "course-101" or UUIDs
+export const templates = mysqlTable("templates", {
+  id: varchar("id", { length: 255 }).primaryKey(), // Using text ID for friendly IDs like "course-101" or UUIDs
   name: text("name").notNull(),
-  width: integer("width").notNull().default(794), // A4 at 96 DPI (approx)
-  height: integer("height").notNull().default(1123),
+  width: int("width").notNull().default(794), // A4 at 96 DPI (approx)
+  height: int("height").notNull().default(1123),
   orientation: text("orientation").notNull().default("landscape"), // "portrait" | "landscape"
-  elements: jsonb("elements").notNull().$type<TemplateElement[]>(), // Storing elements as JSON
+  elements: json("elements").notNull().$type<TemplateElement[]>(), // Storing elements as JSON
   baseThemeId: text("base_theme_id"),
   thumbnailUrl: text("thumbnail_url"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  createdAt: datetime("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedAt: datetime("updated_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
-export const apiKeys = pgTable("api_keys", {
-  id: serial("id").primaryKey(),
-  key: text("key").notNull().unique(), // The actual secret key
+export const apiKeys = mysqlTable("api_keys", {
+  id: int("id").primaryKey().autoincrement(),
+  key: varchar("key", { length: 255 }).notNull().unique(), // The actual secret key
   ownerName: text("owner_name").notNull(),
-  permissions: jsonb("permissions").$type<string[]>().default(["generate"]), // e.g. ["generate", "manage_templates"]
-  isActive: boolean("is_active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  lastUsedAt: timestamp("last_used_at"),
+  permissions: json("permissions").$type<string[]>().default(["generate"]), // e.g. ["generate", "manage_templates"]
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: datetime("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  lastUsedAt: datetime("last_used_at"),
 });
 
-export const generations = pgTable("generations", {
-  id: serial("id").primaryKey(),
-  templateId: text("template_id").references(() => templates.id),
-  apiKeyId: integer("api_key_id").references(() => apiKeys.id),
+export const generations = mysqlTable("generations", {
+  id: int("id").primaryKey().autoincrement(),
+  templateId: varchar("template_id", { length: 255 }).references(() => templates.id),
+  apiKeyId: int("api_key_id").references(() => apiKeys.id),
   recipientName: text("recipient_name"),
   status: text("status").notNull().default("pending"), // "pending" | "completed" | "failed"
   fileUrl: text("file_url"),
-  metadata: jsonb("metadata"), // Store extra fields from the row
-  createdAt: timestamp("created_at").defaultNow(),
+  metadata: json("metadata"), // Store extra fields from the row
+  createdAt: datetime("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 // === TYPES ===
@@ -57,7 +58,7 @@ export interface TemplateElement {
   rotation?: number;
   zIndex?: number;
   opacity?: number;
-  
+
   // Text properties
   text?: string;
   bindingField?: string; // For dynamicText, matches Excel header
@@ -66,7 +67,7 @@ export interface TemplateElement {
   fontWeight?: string | number;
   color?: string;
   textAlign?: "left" | "center" | "right";
-  
+
   // Shape/Image properties
   backgroundColor?: string;
   borderColor?: string;
@@ -86,17 +87,24 @@ export interface Theme {
 
 // === SCHEMAS ===
 
-export const insertTemplateSchema = createInsertSchema(templates);
-export const insertApiKeySchema = createInsertSchema(apiKeys).omit({ id: true, createdAt: true, lastUsedAt: true });
+export const insertTemplateSchema = createInsertSchema(templates, {
+  elements: z.array(z.any()),
+});
+export const insertApiKeySchema = createInsertSchema(apiKeys, {
+  permissions: z.array(z.string()),
+}).omit({ id: true, createdAt: true, lastUsedAt: true });
 export const insertGenerationSchema = createInsertSchema(generations).omit({ id: true, createdAt: true });
 
 // === API CONTRACT TYPES ===
 
+export type User = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+
 export type Template = typeof templates.$inferSelect;
-export type InsertTemplate = z.infer<typeof insertTemplateSchema>;
+export type InsertTemplate = typeof templates.$inferInsert;
 
 export type ApiKey = typeof apiKeys.$inferSelect;
-export type InsertApiKey = z.infer<typeof insertApiKeySchema>;
+export type InsertApiKey = typeof apiKeys.$inferInsert;
 
 export type Generation = typeof generations.$inferSelect;
 

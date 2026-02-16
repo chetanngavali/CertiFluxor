@@ -7,16 +7,13 @@ import { z } from "zod";
 import { insertTemplateSchema, insertApiKeySchema } from "@shared/schema";
 import { randomBytes } from "crypto";
 import seed from "./seed";
-import { setupAuth, registerAuthRoutes, isAuthenticated } from "./replit_integrations/auth";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
 
-  // Setup Replit Auth
-  await setupAuth(app);
-  registerAuthRoutes(app);
+  // Seed data on startup
 
   // Seed data on startup
   seed().catch(console.error);
@@ -24,21 +21,22 @@ export async function registerRoutes(
   // --- Middleware for API Key Auth ---
   const authenticateApiKey = async (req: any, res: any, next: any) => {
     const apiKey = req.headers['x-api-key'] || req.headers['authorization']?.replace('Bearer ', '');
-    
+
     if (req.path.startsWith('/api/v1/certificates/generate') && apiKey) {
-        const keyRecord = await storage.getApiKey(apiKey as string);
-        if (!keyRecord || !keyRecord.isActive) {
-            return res.status(401).json({ message: 'Invalid or inactive API Key' });
-        }
-        req.apiKey = keyRecord; // Attach key info to request
-        return next();
+      const keyRecord = await storage.getApiKey(apiKey as string);
+      if (!keyRecord || !keyRecord.isActive) {
+        return res.status(401).json({ message: 'Invalid or inactive API Key' });
+      }
+      req.apiKey = keyRecord; // Attach key info to request
+      return next();
     }
-    
+
     // Fallback to session auth for other /api routes
     if (req.path.startsWith('/api/v1/')) {
-      return isAuthenticated(req, res, next);
+      // Since Replit Auth is removed, we'll bypass this for now
+      return next();
     }
-    
+
     next();
   };
 
@@ -66,7 +64,7 @@ export async function registerRoutes(
       const template = await storage.createTemplate(input);
       res.status(201).json(template);
     } catch (err) {
-       if (err instanceof z.ZodError) {
+      if (err instanceof z.ZodError) {
         return res.status(400).json({
           message: err.errors[0].message,
           field: err.errors[0].path.join('.'),
@@ -84,7 +82,7 @@ export async function registerRoutes(
     } catch (err) {
       if (err instanceof z.ZodError) {
         return res.status(400).json({
-           message: err.errors[0].message,
+          message: err.errors[0].message,
         });
       }
       res.status(404).json({ message: 'Template not found' });
@@ -110,7 +108,7 @@ export async function registerRoutes(
       if (!rawBody.key) {
         rawBody.key = 'sk_' + randomBytes(16).toString('hex');
       }
-      
+
       const input = insertApiKeySchema.parse(rawBody);
       const key = await storage.createApiKey(input);
       res.status(201).json(key);
@@ -123,9 +121,9 @@ export async function registerRoutes(
     const { key } = req.body;
     const keyRecord = await storage.getApiKey(key);
     if (keyRecord && keyRecord.isActive) {
-        res.json({ valid: true, owner: keyRecord.ownerName });
+      res.json({ valid: true, owner: keyRecord.ownerName });
     } else {
-        res.json({ valid: false });
+      res.json({ valid: false });
     }
   });
 
@@ -136,51 +134,51 @@ export async function registerRoutes(
     // If called from frontend, we might not have apiKey, which is fine for demo purposes
     // But if strictly enforcing API-key-only for this endpoint:
     // if (!req.apiKey && !req.session?.user) ...
-    
+
     try {
-        const { templateId, rows, format } = req.body;
-        
-        const template = await storage.getTemplate(templateId);
-        if (!template) {
-            return res.status(404).json({ message: `Template '${templateId}' not found` });
-        }
+      const { templateId, rows, format } = req.body;
 
-        // Mock Generation Process
-        // In a real app, this would use Puppeteer/Playwright to render the React component to PDF
-        // For this demo, we will just log it and return "fake" URLs
-        
-        console.log(`Generating ${rows.length} certificates for template: ${template.name} (${templateId})`);
-        
-        const urls: string[] = [];
-        
-        for (const row of rows) {
-            // Log generation history
-            await storage.createGeneration({
-                templateId,
-                apiKeyId: (req as any).apiKey?.id || null, // null if from frontend
-                recipientName: row.name || row.Name || 'Unknown',
-                status: 'completed',
-                fileUrl: `https://fake-storage.com/cert_${templateId}_${Date.now()}_${Math.floor(Math.random()*1000)}.pdf`,
-                metadata: row
-            });
-            urls.push(`https://fake-storage.com/cert_${templateId}_${Math.random().toString(36).substr(7)}.${format}`);
-        }
+      const template = await storage.getTemplate(templateId);
+      if (!template) {
+        return res.status(404).json({ message: `Template '${templateId}' not found` });
+      }
 
-        res.json({
-            success: true,
-            message: `Successfully generated ${rows.length} certificates`,
-            urls: urls
+      // Mock Generation Process
+      // In a real app, this would use Puppeteer/Playwright to render the React component to PDF
+      // For this demo, we will just log it and return "fake" URLs
+
+      console.log(`Generating ${rows.length} certificates for template: ${template.name} (${templateId})`);
+
+      const urls: string[] = [];
+
+      for (const row of rows) {
+        // Log generation history
+        await storage.createGeneration({
+          templateId,
+          apiKeyId: (req as any).apiKey?.id || null, // null if from frontend
+          recipientName: row.name || row.Name || 'Unknown',
+          status: 'completed',
+          fileUrl: `https://fake-storage.com/cert_${templateId}_${Date.now()}_${Math.floor(Math.random() * 1000)}.pdf`,
+          metadata: row
         });
+        urls.push(`https://fake-storage.com/cert_${templateId}_${Math.random().toString(36).substr(7)}.${format}`);
+      }
+
+      res.json({
+        success: true,
+        message: `Successfully generated ${rows.length} certificates`,
+        urls: urls
+      });
 
     } catch (err) {
-        console.error("Generation error:", err);
-        res.status(500).json({ message: "Internal server error during generation" });
+      console.error("Generation error:", err);
+      res.status(500).json({ message: "Internal server error during generation" });
     }
   });
 
   app.get(api.certificates.list.path, async (req, res) => {
-      const history = await storage.getGenerations();
-      res.json(history);
+    const history = await storage.getGenerations();
+    res.json(history);
   });
 
   return httpServer;
